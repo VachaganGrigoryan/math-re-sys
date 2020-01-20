@@ -145,6 +145,7 @@ class MainWindowUi(QtWidgets.QMainWindow):
         tabwidget = QtWidgets.QTabWidget()
         tabwidget.addTab(Weibull(), "Weibull")
         tabwidget.addTab(Gamma(), "Gamma")
+        tabwidget.addTab(Rayle(), "Rayle")
         
         self.selectedtab = tabwidget
         self.generalLayout.addWidget(self.selectedtab)
@@ -163,7 +164,7 @@ class MainWindowUi(QtWidgets.QMainWindow):
     
     def _switchUi(self, i):
         print(i)
-        self.generalLayout.removeWidget(self.selectedtab)
+        # self.generalLayout.removeWidget(self.selectedtab)
         self.selectedtab.hide()
         switch = {
             0: lambda: '',
@@ -319,6 +320,53 @@ class Gamma(QtWidgets.QWidget):
 
         self.prob = [P().Gamma(t, int(self.alpha.text()), int(self.beta.text())) for t in T]
         self.dist = [F().Gamma(t, int(self.alpha.text()), int(self.beta.text())) for t in T]
+        
+
+
+        graphLayout = QtWidgets.QHBoxLayout(self)
+        
+        self.graphProb = StaticCanvas(self)
+        self.graphProb.setObjectName("graphProb")
+        self.graphProb.plot(self.T, self.prob, "Graph for Probability")
+        graphLayout.addWidget(self.graphProb)
+
+
+        self.graphDist = StaticCanvas(self)
+        self.graphDist.setObjectName("graphDist")
+        self.graphDist.plot(self.T, self.dist, "Graph for Distribution")
+
+        graphLayout.addWidget(self.graphDist)
+
+        self.layout.addLayout(graphLayout, 3, 0, 3, 2) 
+
+
+
+class Rayle(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+        
+        self.layout = QtWidgets.QGridLayout()
+        self.layout.addWidget(QtWidgets.QLabel("Lmd :"), 0, 0)
+        # self.layout.addWidget(QtWidgets.QLabel("β :"), 1, 0)
+
+        self.lmd = QtWidgets.QLineEdit()
+        self.layout.addWidget(self.lmd, 0, 1)
+
+        # self.beta = QtWidgets.QLineEdit()
+        # self.layout.addWidget(self.beta, 1, 1)
+
+        self.equal = QtWidgets.QPushButton("Հաշվել")
+        self.layout.addWidget(self.equal, 2, 1)
+
+        self.setLayout(self.layout)
+
+        self.equal.clicked.connect(self.EqualCtrl)
+
+    def EqualCtrl(self):
+        self.T = list(range(0,5000,100))
+
+        self.prob = [P().Rayle(t, float(self.lmd.text())) for t in T]
+        self.dist = [F().Rayle(t, float(self.lmd.text())) for t in T]
         
 
 
