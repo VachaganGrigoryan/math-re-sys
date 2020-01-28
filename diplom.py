@@ -5,21 +5,17 @@
 # Created by: PyQt5 UI code generator 5.14.0
 #
 # WARNING! All changes made in this file will be lost!
-
+import logging as log
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from graph import StaticCanvas
 
+from auto_system_reliability import asr 
 from auto_system_reliability.probability import Probability as P
 from auto_system_reliability.distribution import Distribution as F
 
-
-
-T = list(range(0,5000,100))
-
-exp = [P().Weibull(t, 2, 1800) for t in T]
-gamma = [P().Gamma(t, 7, 300) for t in T]
+log.basicConfig(filename='text.log', filemode='w', format='%(message)s::%(levelname)s::%(asctime)s', level=log.DEBUG)
 
 
 
@@ -146,6 +142,8 @@ class MainWindowUi(QtWidgets.QMainWindow):
         tabwidget.addTab(Weibull(), "Weibull")
         tabwidget.addTab(Gamma(), "Gamma")
         tabwidget.addTab(Rayle(), "Rayle")
+        tabwidget.addTab(Exponential(), "Exponential")
+        tabwidget.addTab(Normal(), "Normal")
         
         self.selectedtab = tabwidget
         self.generalLayout.addWidget(self.selectedtab)
@@ -249,9 +247,10 @@ class RootEqualCtrl:
 
 
 
-class Weibull(QtWidgets.QWidget):
+class Weibull(QtWidgets.QWidget): # , asr.Weibull
     def __init__(self):
         super().__init__()
+
         self.layout = QtWidgets.QGridLayout()
         self.layout.addWidget(QtWidgets.QLabel("α :"), 0, 0)
         self.layout.addWidget(QtWidgets.QLabel("β :"), 1, 0)
@@ -267,27 +266,29 @@ class Weibull(QtWidgets.QWidget):
 
         self.setLayout(self.layout)
 
+        # asr.Weibull.super(self, int(self.alpha.text()), int(self.beta.text()))
         self.equal.clicked.connect(self.EqualCtrl)
 
     def EqualCtrl(self):
-        self.T = list(range(0,5000,100))
+        # self.T = list(range(0,5000,100))
 
-        self.prob = [P().Weibull(t, int(self.alpha.text()), int(self.beta.text())) for t in T]
-        self.dist = [F().Weibull(t, int(self.alpha.text()), int(self.beta.text())) for t in T]
+        # self.prob = [P().Weibull(t, int(self.alpha.text()), int(self.beta.text())) for t in self.T]
+        # self.dist = [F().Weibull(t, int(self.alpha.text()), int(self.beta.text())) for t in self.T]
         
+        self.asr = asr.Weibull(int(self.alpha.text()), int(self.beta.text()), 5000)
 
 
         graphLayout = QtWidgets.QHBoxLayout(self)
         
         self.graphProb = StaticCanvas(self)
         self.graphProb.setObjectName("graphProb")
-        self.graphProb.plot(self.T, self.prob, "Graph for Probability")
+        self.graphProb.plot(self.asr.T, self.asr.probability, "Graph for Probability")
         graphLayout.addWidget(self.graphProb)
 
 
         self.graphDist = StaticCanvas(self)
         self.graphDist.setObjectName("graphDist")
-        self.graphDist.plot(self.T, self.dist, "Graph for Distribution")
+        self.graphDist.plot(self.asr.T, self.asr.distribution, "Graph for Distribution")
 
         graphLayout.addWidget(self.graphDist)
 
@@ -316,24 +317,25 @@ class Gamma(QtWidgets.QWidget):
         self.equal.clicked.connect(self.EqualCtrl)
 
     def EqualCtrl(self):
-        self.T = list(range(0,5000,100))
+        # self.T = list(range(0,5000,100))
 
-        self.prob = [P().Gamma(t, int(self.alpha.text()), int(self.beta.text())) for t in T]
-        self.dist = [F().Gamma(t, int(self.alpha.text()), int(self.beta.text())) for t in T]
+        # self.prob = [P().Gamma(t, int(self.alpha.text()), int(self.beta.text())) for t in self.T]
+        # self.dist = [F().Gamma(t, int(self.alpha.text()), int(self.beta.text())) for t in self.T]
         
+        self.asr = asr.Gamma(int(self.alpha.text()), int(self.beta.text()), 5000)
 
 
         graphLayout = QtWidgets.QHBoxLayout(self)
         
         self.graphProb = StaticCanvas(self)
         self.graphProb.setObjectName("graphProb")
-        self.graphProb.plot(self.T, self.prob, "Graph for Probability")
+        self.graphProb.plot(self.asr.T, self.asr.probability, "Graph for Probability")
         graphLayout.addWidget(self.graphProb)
 
 
         self.graphDist = StaticCanvas(self)
         self.graphDist.setObjectName("graphDist")
-        self.graphDist.plot(self.T, self.dist, "Graph for Distribution")
+        self.graphDist.plot(self.asr.T, self.asr.distribution, "Graph for Distribution")
 
         graphLayout.addWidget(self.graphDist)
 
@@ -346,7 +348,7 @@ class Rayle(QtWidgets.QWidget):
         super().__init__()
         
         self.layout = QtWidgets.QGridLayout()
-        self.layout.addWidget(QtWidgets.QLabel("Lmd :"), 0, 0)
+        self.layout.addWidget(QtWidgets.QLabel("λ :"), 0, 0)
         # self.layout.addWidget(QtWidgets.QLabel("β :"), 1, 0)
 
         self.lmd = QtWidgets.QLineEdit()
@@ -363,30 +365,126 @@ class Rayle(QtWidgets.QWidget):
         self.equal.clicked.connect(self.EqualCtrl)
 
     def EqualCtrl(self):
-        self.T = list(range(0,5000,100))
+        # self.T = list(range(0,5000,100))
 
-        self.prob = [P().Rayle(t, float(self.lmd.text())) for t in T]
-        self.dist = [F().Rayle(t, float(self.lmd.text())) for t in T]
+        # self.prob = [P().Rayle(t, float(self.lmd.text())) for t in self.T]
+        # self.dist = [F().Rayle(t, float(self.lmd.text())) for t in self.T]
         
+        self.asr = asr.Rayle(float(self.lmd.text()), 5000)
 
 
         graphLayout = QtWidgets.QHBoxLayout(self)
         
         self.graphProb = StaticCanvas(self)
         self.graphProb.setObjectName("graphProb")
-        self.graphProb.plot(self.T, self.prob, "Graph for Probability")
+        self.graphProb.plot(self.asr.T, self.asr.probability, "Graph for Probability")
         graphLayout.addWidget(self.graphProb)
 
 
         self.graphDist = StaticCanvas(self)
         self.graphDist.setObjectName("graphDist")
-        self.graphDist.plot(self.T, self.dist, "Graph for Distribution")
+        self.graphDist.plot(self.asr.T, self.asr.distribution, "Graph for Distribution")
 
         graphLayout.addWidget(self.graphDist)
 
         self.layout.addLayout(graphLayout, 3, 0, 3, 2) 
 
 
+
+class Exponential(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+        
+        self.layout = QtWidgets.QGridLayout()
+        self.layout.addWidget(QtWidgets.QLabel("λ :"), 0, 0)
+        # self.layout.addWidget(QtWidgets.QLabel("β :"), 1, 0)
+
+        self.lmd = QtWidgets.QLineEdit()
+        self.layout.addWidget(self.lmd, 0, 1)
+
+        # self.beta = QtWidgets.QLineEdit()
+        # self.layout.addWidget(self.beta, 1, 1)
+
+        self.equal = QtWidgets.QPushButton("Հաշվել")
+        self.layout.addWidget(self.equal, 2, 1)
+
+        self.setLayout(self.layout)
+
+        self.equal.clicked.connect(self.EqualCtrl)
+
+
+    def EqualCtrl(self):
+        # self.T = list(range(0,5000,100))
+
+        # self.prob = [P().Exponential(t, float(self.lmd.text())) for t in self.T]
+        # self.dist = [F().Exponential(t, float(self.lmd.text())) for t in self.T]
+        
+        self.asr = asr.Exponential(float(self.lmd.text()), 5000)
+
+
+        graphLayout = QtWidgets.QHBoxLayout(self)
+        
+        self.graphProb = StaticCanvas(self)
+        self.graphProb.setObjectName("graphProb")
+        self.graphProb.plot(self.asr.T, self.asr.probability, "Graph for Probability")
+        graphLayout.addWidget(self.graphProb)
+
+
+        self.graphDist = StaticCanvas(self)
+        self.graphDist.setObjectName("graphDist")
+        self.graphDist.plot(self.asr.T, self.asr.distribution, "Graph for Distribution")
+
+        graphLayout.addWidget(self.graphDist)
+
+        self.layout.addLayout(graphLayout, 3, 0, 3, 2) 
+
+
+class Normal(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+        
+        self.layout = QtWidgets.QGridLayout()
+        self.layout.addWidget(QtWidgets.QLabel("m˳ :"), 0, 0)
+        self.layout.addWidget(QtWidgets.QLabel("Ϭ˳ :"), 1, 0)
+
+        self.m0 = QtWidgets.QLineEdit()
+        self.layout.addWidget(self.m0, 0, 1)
+
+        self.sig0 = QtWidgets.QLineEdit()
+        self.layout.addWidget(self.sig0, 1, 1)
+
+        self.equal = QtWidgets.QPushButton("Հաշվել")
+        self.layout.addWidget(self.equal, 2, 1)
+
+        self.setLayout(self.layout)
+
+        self.equal.clicked.connect(self.EqualCtrl)
+
+
+    def EqualCtrl(self):
+        # self.T = list(range(0,5000,100))
+
+        # self.prob = [P().Normal(t, float(self.m0.text()), float(self.sig0.text())) for t in self.T]
+        # self.dist = [F().Normal(t, float(self.m0.text()), float(self.sig0.text())) for t in self.T]
+        
+        self.asr = asr.Normal(int(self.m0.text()), int(self.sig0.text()), 5000)
+
+
+        graphLayout = QtWidgets.QHBoxLayout(self)
+        
+        self.graphProb = StaticCanvas(self)
+        self.graphProb.setObjectName("graphProb")
+        self.graphProb.plot(self.asr.T, self.asr.probability, "Graph for Probability")
+        graphLayout.addWidget(self.graphProb)
+
+
+        self.graphDist = StaticCanvas(self)
+        self.graphDist.setObjectName("graphDist")
+        self.graphDist.plot(self.asr.T, self.asr.distribution, "Graph for Distribution")
+
+        graphLayout.addWidget(self.graphDist)
+
+        self.layout.addLayout(graphLayout, 3, 0, 3, 2)
 
 
 if __name__ == "__main__":
