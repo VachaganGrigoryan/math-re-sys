@@ -3,6 +3,10 @@ from functools import reduce
 from .integral import *
 
 
+import logging as log
+log.basicConfig(filename='text.log', filemode='w', format='%(levelname)s::%(message)s::%(asctime)s', level=log.DEBUG)
+log.info("This is a asr.py file")
+
 class Weibull:
 
     def __init__(self, alpha, beta, t=5000):
@@ -30,7 +34,6 @@ class Weibull:
     @staticmethod
     def D(alpha, beta, t):
         return ((alpha*t**(alpha-1))/beta**alpha)*math.e**(-(t/beta)**alpha)
- 
 
 
 class Gamma:
@@ -150,6 +153,45 @@ class Normal:
         return math.e**(-(t-m0)**2/(2*sig0**2))/(sig0*math.sqrt(2*math.pi)*(0.5+Integral.LaplasFunc(m0/sig0)))
     
 
+
+class NRR:
+
+    def __init__(self, lmd, myu):
+        self.lmd = lmd
+        self.myu = myu
+        self.lmdC = sum(lmd)
+
+
+
+    def IntensityOfFailure(self, t):
+        return self.myu/(self.lmdC+self.myu) + self.lmdC*math.e**(-(self.lmdC+self.myu)*t)/(self.lmdC+self.myu)
+    
+
+    # def IntensityOfRecovery(self):
+
+        # pass
+    
+    
+    def FunctionAvailability(self):
+        ''' Kg(t) = myu/(lmdC+myu) + lmdC/(lmdC+myu) '''
+        return
+    
+    def CoefficientAvailability(self):
+        ''' Kg = T/(T+Tv) '''
+        return 1/(1+sum(lmd/myu for lmd, myu in zip(self.lmd, self.myu)))
+
+
+    # @staticmethod
+    def TimeBetweenFailures(self):
+        ''' T = 1/lmd '''
+        return 1/self.lmdC
+
+    # @staticmethod
+    def AverageTimeOfSystemRecovery(self):
+        ''' Tv = sum(lmd[i]/myu[i])/lmdC '''
+        return sum(lmd/myu for lmd, myu in zip(self.lmd, self.myu))/self.lmdC
+
+    
 
 
 def FailureFreeProbability(probs):
