@@ -126,7 +126,7 @@ class MainWindowUi(QtWidgets.QMainWindow):
 
     
     def _buildNRNR(self):
-        print("Any Ui 1")
+        log.info("Function _buildNRNR()")
         tabwidget = QtWidgets.QTabWidget()
         tabwidget.addTab(ui.Weibull(), "Weibull")
         tabwidget.addTab(ui.Gamma(), "Gamma")
@@ -143,13 +143,15 @@ class MainWindowUi(QtWidgets.QMainWindow):
 
 
     def _buildRNR(self):
-        print("Any Ui 2")
+        log.info("Function _buildRNR()")
+        tabwidget = ui.RNR()     
+        self.selectedtab = tabwidget
+        self.generalLayout.addWidget(self.selectedtab)
 
     
     def _buildNRR(self):
-        print("Any Ui 3")
+        log.info("Function _buildNRR()")
         tabwidget = ui.NRR()     
-        
         self.selectedtab = tabwidget
         self.generalLayout.addWidget(self.selectedtab)
         

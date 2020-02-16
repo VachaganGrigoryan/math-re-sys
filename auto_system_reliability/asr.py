@@ -151,30 +151,64 @@ class Normal:
     @staticmethod
     def D(m0, sig0, t):
         return math.e**(-(t-m0)**2/(2*sig0**2))/(sig0*math.sqrt(2*math.pi)*(0.5+Integral.LaplasFunc(m0/sig0)))
-    
+
+
+class RNR:
+
+    def __init__(self, m, lmd, t=100):
+        self.m = m
+        self.lmd = lmd
+        self.T = list(range(0, t, 5))
+
+    @property
+    def probability(self):
+        return [1-(1-Exponential.P(self.lmd, t))**(self.m+1) for t in self.T]
+
+    @property
+    def distribution(self):
+        return [((self.m+1)*Exponential.D(self.lmd, t)**self.m)*(1-Exponential.P(self.lmd, t))**self.m for t in self.T]
+
+    @property
+    def system_failure_rate(self):
+        return [d/p for p, d in zip(self.probability, self.distribution)]
+
+    # @property
+    # def func1(self):
+    #     pass
+
+    # @property
+    # def func2(self):
+    #     pass
+
+    # @property
+    # def func3(self):
+    #     pass
+
+    # @property
+    # def func4(self):
+    #     pass
 
 
 class NRR:
 
-    def __init__(self, lmd, myu):
+    def __init__(self, lmd, myu, t):
         self.lmd = lmd
         self.myu = myu
         self.lmdC = sum(lmd)
-
-
+        self.myuC = myu[0]
+        self.T = list(range(0, t, 2))
 
     def IntensityOfFailure(self, t):
-        return self.myu/(self.lmdC+self.myu) + self.lmdC*math.e**(-(self.lmdC+self.myu)*t)/(self.lmdC+self.myu)
+        return self.myuC/(self.lmdC+self.myuC) + self.lmdC*math.e**(-(self.lmdC+self.myuC)*t)/(self.lmdC+self.myuC)
     
 
     # def IntensityOfRecovery(self):
 
-        # pass
-    
-    
+        # pass    
+    @property
     def FunctionAvailability(self):
         ''' Kg(t) = myu/(lmdC+myu) + lmdC/(lmdC+myu) '''
-        return
+        return [self.IntensityOfFailure(t) for t in self.T]  
     
     def CoefficientAvailability(self):
         ''' Kg = T/(T+Tv) '''
