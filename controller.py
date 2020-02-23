@@ -19,7 +19,7 @@ class MainWindowUi(QtWidgets.QMainWindow):
 
     def setupUi(self):
         self.setObjectName("MainWindow")
-        self.resize(800, 800)
+        self.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
 
@@ -27,6 +27,7 @@ class MainWindowUi(QtWidgets.QMainWindow):
         self.generalLayout.setContentsMargins(20, 20, 20, 20)
         self.generalLayout.setObjectName("generalLayout")
 
+        self.generalLayout.setAlignment(QtCore.Qt.AlignTop)
         self.centralwidget.setLayout(self.generalLayout)
 
         self.selectedtab = QtWidgets.QWidget(self)
@@ -158,7 +159,9 @@ class MainWindowUi(QtWidgets.QMainWindow):
 
     def _buildRR(self):
         print("Any Ui 4")
-
+        tabwidget = ui.RR()     
+        self.selectedtab = tabwidget
+        self.generalLayout.addWidget(self.selectedtab)
     
     def _switchUi(self, i):
         print(i)

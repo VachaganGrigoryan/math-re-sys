@@ -13,6 +13,7 @@ for i in range(subs):
     #     EH[i].append({'myu':float(input("Enter myu : ")), 'lmd':float(input("Enter lmd : "))})
 
 
+print(EH)
 Kph = 1
 for i in range(subs):
     m = EH[i][0]

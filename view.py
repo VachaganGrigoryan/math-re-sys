@@ -5,6 +5,7 @@ from PyQt5.QtGui import QFont
 from graph import StaticCanvas
 from auto_system_reliability import asr
 
+import math
 
 import logging as log
 log.basicConfig(filename='text.log', filemode='w', format='%(message)s::%(levelname)s::%(asctime)s', level=log.DEBUG)
@@ -394,3 +395,89 @@ class NRR(QtWidgets.QWidget):
 
 
         self.MainLayout.addLayout(graphLayout, 3, 0, 3, 2)        
+
+
+
+class RR(QtWidgets.QWidget):
+
+    def __init__(self):
+        super().__init__()
+
+        self.MainLayout = QtWidgets.QGridLayout()
+
+        self.MainLayout.addWidget(QtWidgets.QLabel('N = '), 0, 0)
+        self.MainLayout.addWidget(QtWidgets.QLineEdit(objectName='count'), 0, 1)
+        create = QtWidgets.QPushButton('Ստեղծել', objectName='create')
+        self.MainLayout.addWidget(create, 0, 2)
+        create.clicked.connect(self.CreateCtrl)
+
+
+        self.setLayout(self.MainLayout)
+
+    def CreateCtrl(self):
+
+        try:
+            count = self.findChild(QtWidgets.QLineEdit, "count")
+            k = int(count.text())
+        except:
+            return
+        
+        deleteItemsOfLayout(self.MainLayout)
+        # self.MainLayout = QtWidgets.QGridLayout()
+        n = math.ceil(math.sqrt(k))
+
+        for i in range(n):
+            for j in range(1, n+1):
+                self.MainLayout.addWidget(System(), i, j)
+                if k == i*n+j:
+                    break
+            else:
+                continue
+            break
+
+        # self.setLayout(self.MainLayout)
+
+class System(QtWidgets.QWidget):
+
+    def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
+        super().__init__(parent=parent, flags=flags)
+        self.setupUi()
+
+    def setupUi(self):
+        self.MainLayout = QtWidgets.QVBoxLayout(self)
+        self.setLayout(self.MainLayout)
+        self.sysType = QtWidgets.QComboBox(self)
+        self.sysType.addItems(["Տարր", "Համակարգ"])
+        self.sysType.currentIndexChanged.connect(self.sysTypechange)
+        self.MainLayout.addWidget(self.sysType)
+        
+        self.grid = QtWidgets.QGridLayout()
+        self.sysTypechange(0)
+    
+    def sysTypechange(self,i):
+        print(i)
+
+        if not i: 
+            deleteItemsOfLayout(self.grid)
+            self.MainLayout.addLayout(self.grid)      
+            self.grid.addWidget(QtWidgets.QLabel(f"λ :"), 1, 0)
+            self.grid.addWidget(QtWidgets.QLineEdit(), 1, 1)
+            
+            self.grid.addWidget(QtWidgets.QLabel(f"μ :"), 2, 0)
+            self.grid.addWidget(QtWidgets.QLineEdit(), 2, 1)
+        else:
+            deleteItemsOfLayout(self.grid)
+            self.grid.addWidget(RR())
+
+
+
+
+def deleteItemsOfLayout(layout):
+    if layout is not None:
+        while layout.count():
+            item = layout.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.setParent(None)
+            else:
+                deleteItemsOfLayout(item.layout())
