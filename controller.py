@@ -11,7 +11,7 @@ log.info("This is a controller.py file")
 class MainWindowUi(QtWidgets.QMainWindow):
     """MainWindowUi's View (GUI)."""
 
-    def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
+    def __init__(self, parent: object = None, flags: object = QtCore.Qt.WindowFlags()) -> object:
         super(MainWindowUi, self).__init__(parent=parent, flags=flags)
         
         self.setupUi()

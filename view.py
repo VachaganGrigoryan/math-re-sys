@@ -11,7 +11,7 @@ import logging as log
 log.basicConfig(filename='text.log', filemode='w', format='%(message)s::%(levelname)s::%(asctime)s', level=log.DEBUG)
 log.info("This is a view.py file")
 
-class Weibull(QtWidgets.QWidget): # , asr.Weibull
+class Weibull(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
 
@@ -29,15 +29,9 @@ class Weibull(QtWidgets.QWidget): # , asr.Weibull
         self.layout.addWidget(self.equal, 2, 1)
 
         self.setLayout(self.layout)
-
-        # asr.Weibull.super(self, int(self.alpha.text()), int(self.beta.text()))
         self.equal.clicked.connect(self.EqualCtrl)
 
     def EqualCtrl(self):
-        # self.T = list(range(0,5000,100))
-
-        # self.prob = [P().Weibull(t, int(self.alpha.text()), int(self.beta.text())) for t in self.T]
-        # self.dist = [F().Weibull(t, int(self.alpha.text()), int(self.beta.text())) for t in self.T]
         
         self.asr = asr.Weibull(int(self.alpha.text()), int(self.beta.text()), 5000)
 
@@ -81,10 +75,6 @@ class Gamma(QtWidgets.QWidget):
         self.equal.clicked.connect(self.EqualCtrl)
 
     def EqualCtrl(self):
-        # self.T = list(range(0,5000,100))
-
-        # self.prob = [P().Gamma(t, int(self.alpha.text()), int(self.beta.text())) for t in self.T]
-        # self.dist = [F().Gamma(t, int(self.alpha.text()), int(self.beta.text())) for t in self.T]
         
         self.asr = asr.Gamma(int(self.alpha.text()), int(self.beta.text()), 5000)
 
@@ -129,10 +119,6 @@ class Rayle(QtWidgets.QWidget):
         self.equal.clicked.connect(self.EqualCtrl)
 
     def EqualCtrl(self):
-        # self.T = list(range(0,5000,100))
-
-        # self.prob = [P().Rayle(t, float(self.lmd.text())) for t in self.T]
-        # self.dist = [F().Rayle(t, float(self.lmd.text())) for t in self.T]
         
         self.asr = asr.Rayle(float(self.lmd.text()), 5000)
 
@@ -178,10 +164,6 @@ class Exponential(QtWidgets.QWidget):
 
 
     def EqualCtrl(self):
-        # self.T = list(range(0,5000,100))
-
-        # self.prob = [P().Exponential(t, float(self.lmd.text())) for t in self.T]
-        # self.dist = [F().Exponential(t, float(self.lmd.text())) for t in self.T]
         
         self.asr = asr.Exponential(float(self.lmd.text()), 5000)
 
@@ -372,15 +354,7 @@ class NRR(QtWidgets.QWidget):
     def EqualCtrl(self):
         print("Equal")
         rows = self.PropertyLayout.rowCount()
-        # lmd = []
-        # myu = []
-        # for row in range(1, rows):
-        #     l = self.PropertyLayout.itemAtPosition(row, 0)
-        #     m = self.PropertyLayout.itemAtPosition(row, 1)
-        #     if l and m:
-        #         print(l.widget().text(), m.widget().text())
-        #         lmd.append(float(l.widget().text() or 0))
-        #         myu.append(float(m.widget().text() or 0))
+
         lmd = [float(self.PropertyLayout.itemAtPosition(row, 0).widget().text() or 0) for row in range(1, rows) if self.PropertyLayout.itemAtPosition(row, 0)]
         myu = [float(self.PropertyLayout.itemAtPosition(row, 1).widget().text() or 0) for row in range(1, rows) if self.PropertyLayout.itemAtPosition(row, 1)]
         print(lmd, myu)
@@ -400,8 +374,69 @@ class NRR(QtWidgets.QWidget):
 
 class RR(QtWidgets.QWidget):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
+        super().__init__(parent=parent, flags=flags)
+        self.MainLayout = QtWidgets.QVBoxLayout(self)
+        # self.MainLayout.addWidget(System(self))
+        self.System = System()
+        self.MainLayout.addWidget(self.System)
+
+        equal = QtWidgets.QPushButton('Հաշվել', objectName='equal')
+        self.MainLayout.addWidget(equal)
+        equal.clicked.connect(self.EqualCtrl)
+
+        self.setLayout(self.MainLayout)
+
+
+    def EqualCtrl(self):
+
+        values = RR.getValues(self.System)
+        print(values)
+
+    @staticmethod
+    def getValues(system):
+        # system = self.System
+        print(system)
+        rows = system.MainLayout.rowCount()
+        cols = system.MainLayout.columnCount()
+        print(rows, cols)
+
+        ls = []
+        for row in range(1, rows):
+            for col in range(0, cols):
+                elm = system.MainLayout.itemAtPosition(row, col)
+                # print(elm)
+                if elm:
+                    widget = elm.widget()
+                    print(widget)
+                    if widget.sysType.currentIndex():
+                        print(widget.System)
+                        ls.append(RR.getValues(widget.System))
+                    else:
+                        print(widget.grid.itemAtPosition(0, 1))
+                        ls.append((widget.grid.itemAtPosition(0, 1).widget().text(), widget.grid.itemAtPosition(1, 1).widget().text()))
+
+        sys_dict = {
+            'type': ["S", system.type1.currentIndex(), system.type2.currentIndex()],
+            'value': ls
+        }
+
+        return sys_dict
+
+        # if self.MainLayout is not None:
+        #     while layout.count():
+        #         item = layout.takeAt(0)
+        #         widget = item.widget()
+        #         if widget is not None:
+        #             # widget.setParent(None)
+        #             print(widget)
+        #         else:
+        #             EqualCtrl(self, item.layout())
+
+
+class System(QtWidgets.QWidget):
+    def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
+        super().__init__(parent=parent, flags=flags)
 
         self.MainLayout = QtWidgets.QGridLayout()
 
@@ -410,7 +445,6 @@ class RR(QtWidgets.QWidget):
         create = QtWidgets.QPushButton('Ստեղծել', objectName='create')
         self.MainLayout.addWidget(create, 0, 2)
         create.clicked.connect(self.CreateCtrl)
-
 
         self.setLayout(self.MainLayout)
 
@@ -423,51 +457,57 @@ class RR(QtWidgets.QWidget):
             return
         
         deleteItemsOfLayout(self.MainLayout)
-        # self.MainLayout = QtWidgets.QGridLayout()
-        n = math.ceil(math.sqrt(k))
 
-        for i in range(n):
-            for j in range(1, n+1):
-                self.MainLayout.addWidget(System(), i, j)
-                if k == i*n+j:
+        self.type1 = QtWidgets.QComboBox(self)
+        self.type1.addItems(["Ըստ տարրերի", "Ընդհանուր"])
+        self.MainLayout.addWidget(self.type1, 0, 0)
+        self.type2 = QtWidgets.QComboBox(self)
+        self.type2.addItems(["Մշտական", "Փոխարինումով"])
+        self.MainLayout.addWidget(self.type2, 0, 1)
+
+        n = math.ceil(math.sqrt(k))
+        print(n)
+        for i in range(1, n+1):
+            for j in range(n):
+                self.MainLayout.addWidget(Element(), i, j)
+                if k == (i-1)*n+j+1:
                     break
             else:
                 continue
             break
 
-        # self.setLayout(self.MainLayout)
 
-class System(QtWidgets.QWidget):
+class Element(QtWidgets.QWidget):
 
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
         super().__init__(parent=parent, flags=flags)
+        self.MainLayout = QtWidgets.QVBoxLayout(self)
+        self.sysType = QtWidgets.QComboBox(self)
+        self.grid = QtWidgets.QGridLayout()
         self.setupUi()
 
     def setupUi(self):
-        self.MainLayout = QtWidgets.QVBoxLayout(self)
         self.setLayout(self.MainLayout)
-        self.sysType = QtWidgets.QComboBox(self)
         self.sysType.addItems(["Տարր", "Համակարգ"])
         self.sysType.currentIndexChanged.connect(self.sysTypechange)
         self.MainLayout.addWidget(self.sysType)
-        
-        self.grid = QtWidgets.QGridLayout()
         self.sysTypechange(0)
     
-    def sysTypechange(self,i):
+    def sysTypechange(self, i):
         print(i)
 
         if not i: 
             deleteItemsOfLayout(self.grid)
             self.MainLayout.addLayout(self.grid)      
-            self.grid.addWidget(QtWidgets.QLabel(f"λ :"), 1, 0)
-            self.grid.addWidget(QtWidgets.QLineEdit(), 1, 1)
+            self.grid.addWidget(QtWidgets.QLabel(f"λ :"), 0, 0)
+            self.grid.addWidget(QtWidgets.QLineEdit(), 0, 1)
             
-            self.grid.addWidget(QtWidgets.QLabel(f"μ :"), 2, 0)
-            self.grid.addWidget(QtWidgets.QLineEdit(), 2, 1)
+            self.grid.addWidget(QtWidgets.QLabel(f"μ :"), 1, 0)
+            self.grid.addWidget(QtWidgets.QLineEdit(), 1, 1)
         else:
             deleteItemsOfLayout(self.grid)
-            self.grid.addWidget(RR())
+            self.System = System()
+            self.grid.addWidget(self.System)
 
 
 
