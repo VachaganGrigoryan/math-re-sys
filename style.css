@@ -1,0 +1,14 @@
+#MainWindow {
+    background-color: slategray;
+    font-size: 12px;
+}
+
+#menubar, #menu_1, #menu_2, #menu_3 {
+    background-color: cornflowerblue;
+    font-size: 13px;
+    font-weight: lighter;
+}
+
+#NRNRFunction {
+    font-size: 15px;
+}
