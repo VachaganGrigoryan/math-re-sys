@@ -1,7 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from models import asr
-
-from . import *
+from graph import StaticCanvas
 
 class Gamma(QtWidgets.QWidget):
     def __init__(self):

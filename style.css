@@ -1,14 +1,26 @@
 #MainWindow {
-    background-color: slategray;
+    background-color: #088da5;
     font-size: 12px;
 }
 
 #menubar, #menu_1, #menu_2, #menu_3 {
-    background-color: cornflowerblue;
+    background-color: #0e2f44;
+    color: azure;
     font-size: 13px;
     font-weight: lighter;
 }
 
 #NRNRFunction {
     font-size: 15px;
+}
+
+#statusbar {
+    border: blue solid 1px;
+    background-color: #5ac18e;
+    color: azure;
+    font-size: 10px;
+}
+
+Label {
+
 }

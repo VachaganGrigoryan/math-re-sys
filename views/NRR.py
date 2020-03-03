@@ -1,14 +1,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from models import asr
-
-from . import *
+from graph import StaticCanvas
 
 class NRR(QtWidgets.QWidget):
-    log.info("Class NRR")
 
     def __init__(self):
         super().__init__()
-        log.info("NRR init")
 
         self.horizontalLayout = QtWidgets.QVBoxLayout(self)
         self.MainLayout = QtWidgets.QGridLayout()

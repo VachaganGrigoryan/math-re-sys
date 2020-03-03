@@ -1,7 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from models import asr
-
-from . import *
+from graph import StaticCanvas
 
 class Weibull(QtWidgets.QWidget):
     def __init__(self):
@@ -26,7 +25,7 @@ class Weibull(QtWidgets.QWidget):
     def EqualCtrl(self):
         self.asr = asr.Weibull(int(self.alpha.text()), int(self.beta.text()), 5000)
 
-        graphLayout = QtWidgets.QHBoxLayout(self)
+        graphLayout = QtWidgets.QVBoxLayout(self)
 
         self.graphProb = StaticCanvas(self)
         self.graphProb.setObjectName("graphProb")
@@ -36,7 +35,38 @@ class Weibull(QtWidgets.QWidget):
         self.graphDist = StaticCanvas(self)
         self.graphDist.setObjectName("graphDist")
         self.graphDist.plot(self.asr.T, self.asr.distribution, "Graph for Distribution")
-
         graphLayout.addWidget(self.graphDist)
 
-        self.layout.addLayout(graphLayout, 3, 0, 3, 2)
+        self.createTable()
+
+        tableLayout = QtWidgets.QHBoxLayout()
+        tableLayout.addLayout(graphLayout)
+        tableLayout.addWidget(self.tableWidget)
+
+        self.layout.addLayout(tableLayout, 3, 0, 3, 2)
+
+    def createTable(self):
+        # Create table
+        self.tableWidget = QtWidgets.QTableWidget()
+        self.tableWidget.setRowCount(50)
+        self.tableWidget.setColumnCount(3)
+        for i, t, p, d in zip(range(50), self.asr.T, self.asr.probability, self.asr.distribution):
+            print(i, t, p, d)
+            self.tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem('%d' % t))
+            self.tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem('%.5f' % p))
+            self.tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem('%.5f' % d))
+        # self.tableWidget.move(0, 0)
+
+        # table selection change
+        # self.tableWidget.doubleClicked.connect(self.on_click)
+
+
+# def deleteItemsOfLayout(layout):
+#     if layout is not None:
+#         while layout.count():
+#             item = layout.takeAt(0)
+#             widget = item.widget()
+#             if widget is not None:
+#                 widget.setParent(None)
+#             else:
+#                 deleteItemsOfLayout(item.layout())

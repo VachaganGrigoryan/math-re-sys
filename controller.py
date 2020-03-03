@@ -1,15 +1,11 @@
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QFont
 
-# from views import weibull, gamma, rayle, exponential, normal, view as ui
-
 import views as ui
-
 
 import logging as log
 log.basicConfig(filename='text.log', filemode='w', format='%(message)s::%(levelname)s::%(asctime)s', level=log.DEBUG)
 log.info("This is a controller.py file")
-
 
 class MainWindowUi(QtWidgets.QMainWindow):
     """MainWindowUi's View (GUI)."""
@@ -37,8 +33,8 @@ class MainWindowUi(QtWidgets.QMainWindow):
         self.SystemType.setObjectName("SystemType")
         self.SystemType.addItems(["", "", "", "", ""])
         self.generalLayout.addWidget(self.SystemType)
-        self.SystemType.currentIndexChanged.connect(lambda: self._switchView(self.SystemType.currentIndex()))
 
+        self.SystemType.currentIndexChanged.connect(self._switchView)
 
         self.setCentralWidget(self.centralwidget)
 
@@ -56,13 +52,13 @@ class MainWindowUi(QtWidgets.QMainWindow):
         self.statusbar.setObjectName("statusbar")
         self.setStatusBar(self.statusbar)
         self.ctrl_n = QtWidgets.QAction(self)
-        self.ctrl_n.setObjectName("action")
+        self.ctrl_n.setObjectName("ctrl_n")
         self.ctrl_s = QtWidgets.QAction(self)
-        self.ctrl_s.setObjectName("action_2")
+        self.ctrl_s.setObjectName("ctrl_s")
         self.ctrl_g = QtWidgets.QAction(self)
         self.ctrl_g.setObjectName("ctrl_g")
         self.ctrl_w = QtWidgets.QAction(self)
-        self.ctrl_w.setObjectName("action_3")
+        self.ctrl_w.setObjectName("ctrl_w")
         self.ctrl_a = QtWidgets.QAction(self)
         self.ctrl_a.setObjectName("ctrl_a")
         self.ctrl_c = QtWidgets.QAction(self)
@@ -89,21 +85,21 @@ class MainWindowUi(QtWidgets.QMainWindow):
     
     def _buildNRNR(self):
         log.info("Function _buildNRNR()")
-        tabwidget = QtWidgets.QTabWidget(objectName='NRNRFunction')
-        tabwidget.addTab(ui.Weibull(), "Weibull")
-        tabwidget.addTab(ui.Gamma(), "Gamma")
-        tabwidget.addTab(ui.Rayle(), "Rayle")
-        tabwidget.addTab(ui.Exponential(), "Exponential")
-        tabwidget.addTab(ui.Normal(), "Normal")
+        self.selectedtab = QtWidgets.QTabWidget(objectName='NRNRFunction')
+        self.selectedtab.addTab(ui.Weibull(), "Weibull")
+        self.selectedtab.addTab(ui.Gamma(), "Gamma")
+        self.selectedtab.addTab(ui.Rayle(), "Rayle")
+        self.selectedtab.addTab(ui.Exponential(), "Exponential")
+        self.selectedtab.addTab(ui.Normal(), "Normal")
 
         # tabwidget.setFont(QFont("Times", 15, QFont.Bold))
-        self.selectedtab = tabwidget
+        # self.selectedtab = tabwidget
         self.generalLayout.addWidget(self.selectedtab)
 
 
     def _buildRNR(self):
         log.info("Function _buildRNR()")
-        tabwidget = ui.RNR()     
+        tabwidget = ui.RNR()
         self.selectedtab = tabwidget
         self.generalLayout.addWidget(self.selectedtab)
 
@@ -117,12 +113,12 @@ class MainWindowUi(QtWidgets.QMainWindow):
 
     def _buildRR(self):
         print("Any Ui 4")
-        tabwidget = ui.RR()     
+        # ui.
+        tabwidget = ui.RR()
         self.selectedtab = tabwidget
         self.generalLayout.addWidget(self.selectedtab)
     
-    def _switchView(self, i):
-        print(i)
+    def _switchView(self):
         # self.generalLayout.removeWidget(self.selectedtab)
         self.selectedtab.hide()
         switch = {
@@ -132,7 +128,7 @@ class MainWindowUi(QtWidgets.QMainWindow):
             3: self._buildNRR,
             4: self._buildRR
         }
-        return switch.get(i)()
+        return switch.get(self.SystemType.currentIndex())()
 
 
     def retranslateUi(self):

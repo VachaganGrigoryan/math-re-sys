@@ -2,8 +2,7 @@ import math
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from models import asr
-
-from . import *
+from graph import StaticCanvas
 
 class RR(QtWidgets.QWidget):
 
