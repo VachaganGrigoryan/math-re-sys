@@ -1,13 +1,12 @@
 import math
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from models import asr
-from graph import StaticCanvas
+from PyQt5 import QtCore, QtWidgets
+
 
 class RR(QtWidgets.QWidget):
 
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
-        super().__init__(parent=parent, flags=flags)
+        super(RR, self).__init__(parent=parent, flags=flags)
         self.MainLayout = QtWidgets.QVBoxLayout(self)
         # self.MainLayout.addWidget(System(self))
         self.System = System()
@@ -18,6 +17,9 @@ class RR(QtWidgets.QWidget):
         equal.clicked.connect(self.EqualCtrl)
 
         self.setLayout(self.MainLayout)
+
+
+        self.MainLayout.setAlignment(QtCore.Qt.AlignTop)
 
 
     def EqualCtrl(self):
@@ -55,20 +57,11 @@ class RR(QtWidgets.QWidget):
 
         return sys_dict
 
-        # if self.MainLayout is not None:
-        #     while layout.count():
-        #         item = layout.takeAt(0)
-        #         widget = item.widget()
-        #         if widget is not None:
-        #             # widget.setParent(None)
-        #             print(widget)
-        #         else:
-        #             EqualCtrl(self, item.layout())
-
 
 class System(QtWidgets.QWidget):
+
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
-        super().__init__(parent=parent, flags=flags)
+        super(System, self).__init__(parent=parent, flags=flags)
 
         self.MainLayout = QtWidgets.QGridLayout()
 
@@ -79,6 +72,7 @@ class System(QtWidgets.QWidget):
         create.clicked.connect(self.CreateCtrl)
 
         self.setLayout(self.MainLayout)
+        self.MainLayout.setAlignment(QtCore.Qt.AlignTop)
 
     def CreateCtrl(self):
 
@@ -112,11 +106,13 @@ class System(QtWidgets.QWidget):
 class Element(QtWidgets.QWidget):
 
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
-        super().__init__(parent=parent, flags=flags)
+        super(Element, self).__init__(parent=parent, flags=flags)
         self.MainLayout = QtWidgets.QVBoxLayout(self)
         self.sysType = QtWidgets.QComboBox(self)
         self.grid = QtWidgets.QGridLayout()
         self.setupUi()
+
+        self.MainLayout.setAlignment(QtCore.Qt.AlignTop)
 
     def setupUi(self):
         self.setLayout(self.MainLayout)

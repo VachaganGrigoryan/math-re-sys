@@ -1,10 +1,13 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from models import asr
-from graph import StaticCanvas
+from views.graph import StaticCanvas
+from views.table import CreateTable
+
 
 class Normal(QtWidgets.QWidget):
-    def __init__(self):
-        super().__init__()
+
+    def __init__(self, parent=None, *args, **kwargs):
+        super(Normal, self).__init__(parent=parent, *args, **kwargs)
 
         self.layout = QtWidgets.QGridLayout()
         self.layout.addWidget(QtWidgets.QLabel("m˳ :"), 0, 0)
@@ -23,16 +26,12 @@ class Normal(QtWidgets.QWidget):
 
         self.equal.clicked.connect(self.EqualCtrl)
 
+        self.layout.setAlignment(QtCore.Qt.AlignTop)
+
     def EqualCtrl(self):
-        # self.T = list(range(0,5000,100))
-
-        # self.prob = [P().Normal(t, float(self.m0.text()), float(self.sig0.text())) for t in self.T]
-        # self.dist = [F().Normal(t, float(self.m0.text()), float(self.sig0.text())) for t in self.T]
-
         self.asr = asr.Normal(int(self.m0.text()), int(self.sig0.text()), 5000)
 
-        graphLayout = QtWidgets.QHBoxLayout(self)
-
+        graphLayout = QtWidgets.QVBoxLayout(self)
         self.graphProb = StaticCanvas(self)
         self.graphProb.setObjectName("graphProb")
         self.graphProb.plot(self.asr.T, self.asr.probability, "Graph for Probability")
@@ -41,7 +40,13 @@ class Normal(QtWidgets.QWidget):
         self.graphDist = StaticCanvas(self)
         self.graphDist.setObjectName("graphDist")
         self.graphDist.plot(self.asr.T, self.asr.distribution, "Graph for Distribution")
-
         graphLayout.addWidget(self.graphDist)
 
-        self.layout.addLayout(graphLayout, 3, 0, 3, 2)
+        tableLayout = QtWidgets.QHBoxLayout()
+        self.tableWidget = CreateTable(self, 50, 3, ["Time", "Probability", "Distribution"], self.asr.T, self.asr.probability, self.asr.distribution)
+
+        tableLayout.addLayout(graphLayout)
+        tableLayout.addWidget(self.tableWidget)
+
+        self.layout.addLayout(tableLayout, 3, 0, 3, 2)
+

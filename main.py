@@ -19,7 +19,7 @@ class AppContext(QtWidgets.QApplication):
 
     def run(self):
         window = MainWindowUi(objectName='MainWindow')
-        window.resize(550, 300)
+        window.resize(910, 200)
         window.show()
         return self.exec_()
 

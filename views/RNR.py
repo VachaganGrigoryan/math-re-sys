@@ -1,11 +1,12 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from models import asr
-from graph import StaticCanvas
+from views.graph import StaticCanvas
 
 
 class RNR(QtWidgets.QWidget):
-    def __init__(self):
-        super().__init__()
+
+    def __init__(self, parent=None, *args, **kwargs):
+        super(RNR, self).__init__(parent=parent, *args, **kwargs)
 
         self.layout = QtWidgets.QGridLayout()
         self.layout.addWidget(QtWidgets.QLabel("m :"), 0, 0)
@@ -23,6 +24,8 @@ class RNR(QtWidgets.QWidget):
         self.setLayout(self.layout)
 
         self.equal.clicked.connect(self.EqualCtrl)
+
+        self.layout.setAlignment(QtCore.Qt.AlignTop)
 
     def EqualCtrl(self):
         self.asr = asr.RNR(int(self.m.text()), float(self.lmd.text()), 100)

@@ -1,10 +1,12 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from models import asr
-from graph import StaticCanvas
+from views.graph import StaticCanvas
+from views.table import CreateTable
+
 
 class Exponential(QtWidgets.QWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None, *args, **kwargs):
+        super(Exponential, self).__init__(parent=parent, *args, **kwargs)
 
         self.layout = QtWidgets.QGridLayout()
         self.layout.addWidget(QtWidgets.QLabel("λ :"), 0, 0)
@@ -22,12 +24,12 @@ class Exponential(QtWidgets.QWidget):
         self.setLayout(self.layout)
 
         self.equal.clicked.connect(self.EqualCtrl)
+        self.layout.setAlignment(QtCore.Qt.AlignTop)
 
     def EqualCtrl(self):
         self.asr = asr.Exponential(float(self.lmd.text()), 5000)
 
-        graphLayout = QtWidgets.QHBoxLayout(self)
-
+        graphLayout = QtWidgets.QVBoxLayout(self)
         self.graphProb = StaticCanvas(self)
         self.graphProb.setObjectName("graphProb")
         self.graphProb.plot(self.asr.T, self.asr.probability, "Graph for Probability")
@@ -36,7 +38,13 @@ class Exponential(QtWidgets.QWidget):
         self.graphDist = StaticCanvas(self)
         self.graphDist.setObjectName("graphDist")
         self.graphDist.plot(self.asr.T, self.asr.distribution, "Graph for Distribution")
-
         graphLayout.addWidget(self.graphDist)
 
-        self.layout.addLayout(graphLayout, 3, 0, 3, 2)
+        tableLayout = QtWidgets.QHBoxLayout()
+        self.tableWidget = CreateTable(self, 50, 3, ["Time", "Probability", "Distribution"], self.asr.T, self.asr.probability, self.asr.distribution)
+
+        tableLayout.addLayout(graphLayout)
+        tableLayout.addWidget(self.tableWidget)
+
+        self.layout.addLayout(tableLayout, 3, 0, 3, 2)
+

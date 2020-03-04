@@ -8,7 +8,7 @@ import random
 
 class PlotCanvas(FigureCanvasQTAgg):
 
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
+    def __init__(self, parent=None, width=5, height=3, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot()
 
@@ -16,8 +16,8 @@ class PlotCanvas(FigureCanvasQTAgg):
         self.setParent(parent)
 
         FigureCanvasQTAgg.setSizePolicy(self,
-                QSizePolicy.Expanding,
-                QSizePolicy.Expanding)
+                QSizePolicy.Fixed,
+                QSizePolicy.Fixed)
         FigureCanvasQTAgg.updateGeometry(self)
  
 

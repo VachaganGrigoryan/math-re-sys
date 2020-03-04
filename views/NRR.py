@@ -1,11 +1,11 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from models import asr
-from graph import StaticCanvas
+from views.graph import StaticCanvas
 
 class NRR(QtWidgets.QWidget):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None, *args, **kwargs):
+        super(NRR, self).__init__(parent=parent, *args, **kwargs)
 
         self.horizontalLayout = QtWidgets.QVBoxLayout(self)
         self.MainLayout = QtWidgets.QGridLayout()
