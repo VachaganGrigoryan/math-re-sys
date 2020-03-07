@@ -24,7 +24,7 @@ class System:
     def __init__(self, lmd, myu, _function):
         self.lmd = lmd
         self.myu = myu
-        self._function = evalf(f'{_function}(self)')
+        self._function = eval(f'{_function}(self)')
 
 
     def all_by_replacement(self): # Ընդհանուր փոխարինումով

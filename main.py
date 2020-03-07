@@ -1,5 +1,6 @@
-
-from PyQt5 import QtWidgets
+import pkg_resources
+# pyinstaller --onefile --windowed main.py
+from PyQt5 import QtWidgets, Qt
 from controller import MainWindowUi
 import sys
 
@@ -14,12 +15,12 @@ class AppContext(QtWidgets.QApplication):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         with open('style.css', 'r') as style:
-            qss = style.read()
-        self.setStyleSheet(qss)
+            css = style.read()
+        self.setStyleSheet(css)
 
     def run(self):
         window = MainWindowUi(objectName='MainWindow')
-        window.resize(910, 200)
+        window.resize(910, 600)
         window.show()
         return self.exec_()
 

@@ -1,29 +1,124 @@
-#MainWindow {
-    background-color: #088da5;
+QApplication {
+    background-color: white;
+}
+
+QMainWindow {
+    background-color: #087f5b;
     font-size: 12px;
 }
 
-#menubar, #menu_1, #menu_2, #menu_3 {
-    background-color: #0e2f44;
-    color: azure;
-    font-size: 13px;
+QMenuBar {
+    background-color: #ffffff;
+    selection-color: #d18338;
+    color: #111111;
+    font-size: 18px;
     font-weight: lighter;
 }
+
+QMenuBar::item:selected { /* when selected using mouse or keyboard */
+    background: #eb4924;
+    color: #111111;
+
+}
+
+QMenuBar::item:pressed {
+    background: #eb4924;
+    color: #111111;
+}
+
+
+QMenu {
+     font-size:15px;
+     selection-background-color: #2ECC40;
+     selection-color: #111111;
+     background-color: #00aff0;
+     border-style: solid;
+     border: 0px solid #001f3f;
+     border-radius: 0;
+     color: #111111;
+     padding: 0px 0px 0px 0px;
+}
+
+QMenu:on {
+    padding-top: 0px;
+     padding-left: 0px;
+     background-color: red;
+     selection-background-color: #ffaa00;
+     color: #001f3f;
+     border-radius: 0;
+}
+
+ QMenu:hover {
+    background-color: crimson;
+    selection-background-color: red;
+}
+
+ QMenu::drop-down {
+     border-radius: 0px;
+     background-color: #7A7A7A;
+     color: #EBEBEB;
+     selection-background-color: #001f3f;
+}
+
 
 #NRNRFunction {
     background-color: #7fffd4;
     font-size: 15px;
 }
 
-#statusbar {
+QStatusBar {
     border: blue solid 1px;
-    background-color: #5ac18e;
+    background-color: #ffffff;
     color: azure;
     font-size: 10px;
 }
 
-#graph {
-    /*height: 1800px;*/
-    display: block;
+
+QComboBox {
+    font-size: 20px;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+}
+
+QComboBox:editable {
+    background: pink;
+}
+
+QComboBox:!editable, QComboBox::drop-down:editable {
+    background-color: #ffffff;
+    border: 3px solid #ffffff;
+}
+
+/* QComboBox gets the "on" state when the popup is open */
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    border: 3px solid #2ECC40;
+    background-color: #2ECC40;
+}
+
+QComboBox:on { /* shift the text when the popup opens */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+    image: url(/usr/share/icons/crystalsvg/16x16/actions/1downarrow.png);
+}
+
+QComboBox::down-arrow:on { /* shift the arrow when popup is open */
+    top: 1px;
+    left: 1px;
 }
 
