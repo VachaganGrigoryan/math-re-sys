@@ -3,74 +3,74 @@ QApplication {
 }
 
 QMainWindow {
-    background-color: #087f5b;
+    background-color: #02b875;
     font-size: 12px;
 }
 
 QMenuBar {
-    background-color: #ffffff;
-    selection-color: #d18338;
-    color: #111111;
+    background-color: #25d366;
+    selection-color: pink;
+    color: #001f3f;
     font-size: 18px;
     font-weight: lighter;
 }
 
 QMenuBar::item:selected { /* when selected using mouse or keyboard */
-    background: #eb4924;
-    color: #111111;
+    background: #3aaf85;
+    color: #001f3f;
 
 }
 
 QMenuBar::item:pressed {
-    background: #eb4924;
-    color: #111111;
+    background: #3aaf85;
+    color: #001f3f;
 }
 
 
 QMenu {
      font-size:15px;
-     selection-background-color: #2ECC40;
-     selection-color: #111111;
-     background-color: #00aff0;
+     selection-background-color: #3aaf85;
+     selection-color: #001f3f;
+     background-color: #25d366;
      border-style: solid;
      border: 0px solid #001f3f;
      border-radius: 0;
-     color: #111111;
+     color: #001f3f;
      padding: 0px 0px 0px 0px;
 }
 
 QMenu:on {
     padding-top: 0px;
      padding-left: 0px;
-     background-color: red;
-     selection-background-color: #ffaa00;
+     background-color: #25d366;
+     selection-background-color: #3aaf85;
      color: #001f3f;
      border-radius: 0;
 }
 
  QMenu:hover {
-    background-color: crimson;
-    selection-background-color: red;
+    background-color: #25d366;
+    selection-background-color: #3aaf85;
 }
 
  QMenu::drop-down {
      border-radius: 0px;
-     background-color: #7A7A7A;
-     color: #EBEBEB;
-     selection-background-color: #001f3f;
+     background-color: #25d366;
+     color: #001f3f;
+     selection-background-color: #3aaf85;
 }
 
 
-#NRNRFunction {
-    background-color: #7fffd4;
-    font-size: 15px;
-}
 
 QStatusBar {
-    border: blue solid 1px;
     background-color: #ffffff;
-    color: azure;
-    font-size: 10px;
+    color: #001f3f;
+    font-size: 13px;
+}
+
+QStatusBar::item {
+    border: 1px solid red;
+    border-radius: 3px;
 }
 
 
@@ -79,21 +79,25 @@ QComboBox {
     border-radius: 3px;
     padding: 1px 18px 1px 3px;
     min-width: 6em;
+    text-align: center;
 }
 
 QComboBox:editable {
-    background: pink;
+    background: #3aaf85;
+    color: #001f3f;
 }
 
 QComboBox:!editable, QComboBox::drop-down:editable {
-    background-color: #ffffff;
+    selection-background-color: #3aaf85;
     border: 3px solid #ffffff;
 }
 
 /* QComboBox gets the "on" state when the popup is open */
 QComboBox:!editable:on, QComboBox::drop-down:editable:on {
-    border: 3px solid #2ECC40;
-    background-color: #2ECC40;
+    border: 3px solid #3aaf85;
+    background-color: #3aaf85;
+    selection-background-color: #3aaf85;
+
 }
 
 QComboBox:on { /* shift the text when the popup opens */
@@ -105,7 +109,6 @@ QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 15px;
-
     border-left-width: 1px;
     border-left-color: darkgray;
     border-left-style: solid; /* just a single line */
@@ -120,5 +123,41 @@ QComboBox::down-arrow {
 QComboBox::down-arrow:on { /* shift the arrow when popup is open */
     top: 1px;
     left: 1px;
+}
+
+
+QTabWidget::pane { /* The tab widget frame */
+    border-top: 2px solid #C2C7CB;
+    position: absolute;
+    top: -0.5em;
+}
+
+QTabWidget::tab-bar {
+    alignment: center;
+}
+
+/* Style the tab using the tab sub-control. Note that
+    it reads QTabBar _not_ QTabWidget */
+QTabBar::tab {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #E1E1E1, stop: 0.4 #DDDDDD,
+                                stop: 0.5 #D8D8D8, stop: 1.0 #D3D3D3);
+    border: 2px solid #C4C4C3;
+    border-bottom-color: #C2C7CB; /* same as the pane color */
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    min-width: 8ex;
+    padding: 2px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #fafafa, stop: 0.4 #f4f4f4,
+                                stop: 0.5 #e7e7e7, stop: 1.0 #fafafa);
+}
+
+QTabBar::tab:selected {
+    border-color: #9B9B9B;
+    border-bottom-color: #C2C7CB; /* same as pane color */
 }
 
