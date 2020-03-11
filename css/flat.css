@@ -379,31 +379,31 @@ QRadioButton::indicator:checked {
     image: url('flat/Raidobox_checked.png');
 }
 
-/*QTabWidget*/
-QTabWidget{
-    border:1px solid #ccd1d9;
-}
+/*!*QTabWidget*!*/
+/*QTabWidget{*/
+/*    border:1px solid #ccd1d9;*/
+/*}*/
 
-QTabWidget::pane { /* The tab widget frame */
-    border: none;
-    background-color: #fff;
-    border-radius: 3px;
-    border-top-left-radius: 0;
-}
+/*QTabWidget::pane { !* The tab widget frame *!*/
+/*    border: none;*/
+/*    background-color: #fff;*/
+/*    border-radius: 3px;*/
+/*    border-top-left-radius: 0;*/
+/*}*/
 
-QTabBar::tab {
-    padding: 8px 30px;
-    background-color: #fff;
-}
+/*QTabBar::tab {*/
+/*    padding: 8px 30px;*/
+/*    background-color: #fff;*/
+/*}*/
 
-QTabBar::tab:first {
-    border-top-left-radius: 3px;
-}
+/*QTabBar::tab:first {*/
+/*    border-top-left-radius: 3px;*/
+/*}*/
 
-QTabBar::tab:!selected {
-    border-left: 1px solid #ccd1d9;
-    background-color: #e6e9ed;
-}
+/*QTabBar::tab:!selected {*/
+/*    border-left: 1px solid #ccd1d9;*/
+/*    background-color: #e6e9ed;*/
+/*}*/
 
 /*QMenu*/
 QMenu{
