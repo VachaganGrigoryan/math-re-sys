@@ -25,8 +25,8 @@ class AppContext(QtWidgets.QApplication):
 
 
         # self.setWindowIcon(QtGui.QIcon(os.path.dirname(os.path.realpath(__file__)) + os.path.sep + 'icon.png'))
-        self.setWindowIcon(QtGui.QIcon('icon5.png'))
-        # with open('css/light.css', 'r') as style:
+        self.setWindowIcon(QtGui.QIcon('icon.png'))
+        # with open('style.css', 'r') as style:
         #     css = style.read()
         # self.setStyleSheet(css)
 

@@ -9,11 +9,12 @@ log.info("This is a asr.py file")
 
 class Weibull:
 
-    def __init__(self, alpha, beta, t=5000):
+    def __init__(self, alpha, beta, t=5000, dt=100):
         self.alpha = alpha
         self.beta = beta
         self.t = t
-        self.T = list(range(0, t, 100))
+        self.dt = dt
+        self.T = list(range(0, t, dt))
     
 
     @property
@@ -38,11 +39,12 @@ class Weibull:
 
 class Gamma:
 
-    def __init__(self, alpha, beta, t=5000):
+    def __init__(self, alpha, beta, t=5000, dt=100):
         self.alpha = alpha
         self.beta = beta
         self.t = t
-        self.T = list(range(0,t,100))
+        self.dt = dt
+        self.T = list(range(0,t,dt))
     
 
     @property
@@ -68,10 +70,11 @@ class Gamma:
 
 class Rayle:
 
-    def __init__(self, lmd, t=5000):
+    def __init__(self, lmd, t=5000, dt=100):
         self.lmd = lmd
         self.t = t
-        self.T = list(range(0,t,100))
+        self.dt = dt
+        self.T = list(range(0,t,dt))
     
 
     @property
@@ -97,10 +100,11 @@ class Rayle:
 
 class Exponential:
 
-    def __init__(self, lmd, t=5000):
+    def __init__(self, lmd, t=5000, dt=100):
         self.lmd = lmd
         self.t = t
-        self.T = list(range(0,t,100))
+        self.dt = dt
+        self.T = list(range(0,t,dt))
     
 
     @property
@@ -126,11 +130,12 @@ class Exponential:
 
 class Normal:
 
-    def __init__(self, m0, sig0, t=5000):
+    def __init__(self, m0, sig0, t=5000, dt=100):
         self.m0 = m0
         self.sig0 = sig0
         self.t = t
-        self.T = list(range(0,t,100))
+        self.dt = dt
+        self.T = list(range(0,t,dt))
     
 
     @property

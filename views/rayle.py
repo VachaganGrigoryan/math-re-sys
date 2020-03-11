@@ -11,16 +11,20 @@ class Rayle(QtWidgets.QWidget):
 
         self.layout = QtWidgets.QGridLayout()
         self.layout.addWidget(QtWidgets.QLabel("λ :"), 0, 0)
-        # self.layout.addWidget(QtWidgets.QLabel("β :"), 1, 0)
+        self.layout.addWidget(QtWidgets.QLabel("t :"), 0, 2)
+        self.layout.addWidget(QtWidgets.QLabel("dt :"), 1, 2)
 
         self.lmd = QtWidgets.QLineEdit()
         self.layout.addWidget(self.lmd, 0, 1)
 
-        # self.beta = QtWidgets.QLineEdit()
-        # self.layout.addWidget(self.beta, 1, 1)
+        self.t = QtWidgets.QLineEdit()
+        self.layout.addWidget(self.t, 0, 3)
+
+        self.dt = QtWidgets.QLineEdit()
+        self.layout.addWidget(self.dt, 1, 3)
 
         self.equal = QtWidgets.QPushButton("Հաշվել")
-        self.layout.addWidget(self.equal, 2, 1)
+        self.layout.addWidget(self.equal, 2, 2)
 
         self.setLayout(self.layout)
 
@@ -29,8 +33,16 @@ class Rayle(QtWidgets.QWidget):
         self.layout.setAlignment(QtCore.Qt.AlignTop)
 
     def EqualCtrl(self):
-        self.asr = asr.Rayle(float(self.lmd.text()), 5000)
+        try:
+            lmd = float(self.lmd.text())
+            t = int(self.t.text())
+            dt = int(self.dt.text())
+            if lmd<=0 or t<1 or dt<1:
+                raise ValueError
+        except:
+            return
 
+        self.asr = asr.Rayle(lmd, t, dt)
         graphLayout = QtWidgets.QVBoxLayout(self)
         self.graphProb = StaticCanvas(self)
         self.graphProb.setObjectName("graphProb")
@@ -43,10 +55,10 @@ class Rayle(QtWidgets.QWidget):
         graphLayout.addWidget(self.graphDist)
 
         tableLayout = QtWidgets.QHBoxLayout()
-        self.tableWidget = CreateTable(self, 50, 3, ["Time", "Probability", "Distribution"], self.asr.T, self.asr.probability, self.asr.distribution)
+        self.tableWidget = CreateTable(self, t//dt, 3, ["Time", "Probability", "Distribution"], self.asr.T, self.asr.probability, self.asr.distribution)
 
         tableLayout.addLayout(graphLayout)
         tableLayout.addWidget(self.tableWidget)
 
-        self.layout.addLayout(tableLayout, 3, 0, 3, 2)
+        self.layout.addLayout(tableLayout, 3, 0, 3, 4)
 

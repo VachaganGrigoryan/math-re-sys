@@ -28,6 +28,12 @@ class MainWindowUi(QtWidgets.QMainWindow):
         self.generalLayout.setAlignment(QtCore.Qt.AlignTop)
         self.centralwidget.setLayout(self.generalLayout)
 
+
+        self.MainTitle = QtWidgets.QLabel()
+        self.MainTitle.setObjectName("MainTitle")
+        self.MainTitle.setAlignment(QtCore.Qt.AlignCenter)
+        self.generalLayout.addWidget(self.MainTitle)
+
         self.selectedtab = QtWidgets.QWidget(self)
 
         self.SystemType = QtWidgets.QComboBox(self.centralwidget)
@@ -87,11 +93,11 @@ class MainWindowUi(QtWidgets.QMainWindow):
     def _buildNRNR(self):
         log.info("Function _buildNRNR()")
         self.selectedtab = QtWidgets.QTabWidget(objectName='NRNRFunction')
-        self.selectedtab.addTab(ui.Weibull(), "Weibull")
-        self.selectedtab.addTab(ui.Gamma(), "Gamma")
-        self.selectedtab.addTab(ui.Rayle(), "Rayle")
-        self.selectedtab.addTab(ui.Exponential(), "Exponential")
-        self.selectedtab.addTab(ui.Normal(), "Normal")
+        self.selectedtab.addTab(ui.Exponential(), "Ցուցչային")
+        self.selectedtab.addTab(ui.Rayle(), "Ռեյլ")
+        self.selectedtab.addTab(ui.Weibull(), "Վեյբուլ")
+        self.selectedtab.addTab(ui.Gamma(), "Գամմա")
+        self.selectedtab.addTab(ui.Normal(), "Նորմալ")
 
         # tabwidget.setFont(QFont("Times", 15, QFont.Bold))
         # self.selectedtab = tabwidget
@@ -135,6 +141,8 @@ class MainWindowUi(QtWidgets.QMainWindow):
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("MainWindow", "Ավտոմատացված համակարգերի հուսալիություն"))
+
+        self.MainTitle.setText(_translate("MainTitle", "Ավտոմատացված համակարգերի հուսալիություն\n հաշվարկի ճարտարագիտական մեթոդներ"))
 
         self.SystemType.setItemText(0, _translate("MainWindow", "Ընտրել համակարգը"))
         self.SystemType.setItemText(1, _translate("MainWindow", "Չպահուստավորված չվերականգնվող"))
