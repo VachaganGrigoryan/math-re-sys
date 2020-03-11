@@ -18,6 +18,8 @@ class NonRecoverableBackup:
     def remove(self, system):
         self._systems.remove(system)
 
+
+
     
 class System:
     
@@ -25,7 +27,6 @@ class System:
         self.lmd = lmd
         self.myu = myu
         self._function = eval(f'{_function}(self)')
-
 
     def all_by_replacement(self): # Ընդհանուր փոխարինումով
         return 
