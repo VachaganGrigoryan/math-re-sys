@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
-from models import asr
+from models import non_recoverable_non_backup
 from .graph import StaticCanvas
 from .table import CreateTable
 
@@ -45,7 +45,7 @@ class Weibull(QtWidgets.QWidget):
         except:
             return
 
-        self.asr = asr.Weibull(alpha, beta, t, dt)
+        self.asr = non_recoverable_non_backup.Weibull(alpha, beta, t, dt)
         graphLayout = QtWidgets.QVBoxLayout(self)
         graphLayout.setObjectName("graph")
         self.graphProb = StaticCanvas(self)

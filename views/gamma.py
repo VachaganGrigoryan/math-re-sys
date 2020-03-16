@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
-from models import asr
+from models import non_recoverable_non_backup
 from views.graph import StaticCanvas
 from views.table import CreateTable
 
@@ -47,7 +47,7 @@ class Gamma(QtWidgets.QWidget):
         except:
             return
 
-        self.asr = asr.Gamma(alpha, beta, t, dt)
+        self.asr = non_recoverable_non_backup.Gamma(alpha, beta, t, dt)
 
         graphLayout = QtWidgets.QVBoxLayout(self)
         self.graphProb = StaticCanvas(self)

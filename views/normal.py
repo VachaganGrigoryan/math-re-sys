@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
-from models import asr
+from models import non_recoverable_non_backup
 from views.graph import StaticCanvas
 from views.table import CreateTable
 
@@ -47,7 +47,7 @@ class Normal(QtWidgets.QWidget):
         except:
             return
 
-        self.asr = asr.Normal(m0, sig0, t, dt)
+        self.asr = non_recoverable_non_backup.Normal(m0, sig0, t, dt)
 
         graphLayout = QtWidgets.QVBoxLayout(self)
         self.graphProb = StaticCanvas(self)

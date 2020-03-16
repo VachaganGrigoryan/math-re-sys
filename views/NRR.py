@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets
-from models import asr
+from models import non_recoverable_non_backup
 from views.graph import StaticCanvas
 
 class NRR(QtWidgets.QWidget):
@@ -76,7 +76,7 @@ class NRR(QtWidgets.QWidget):
                self.PropertyLayout.itemAtPosition(row, 1)]
         print(lmd, myu)
 
-        self.asr = asr.NRR(lmd, myu, 40)
+        self.asr = non_recoverable_non_backup.NRR(lmd, myu, 40)
 
         graphLayout = QtWidgets.QHBoxLayout(self)
         self.graphProb = StaticCanvas(self)

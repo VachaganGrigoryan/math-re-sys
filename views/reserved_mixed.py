@@ -2,15 +2,26 @@ import math
 
 from PyQt5 import QtCore, QtWidgets
 
+from models.recoverable_backup import *
 
-class RR(QtWidgets.QWidget):
+
+class MixedReserved(QtWidgets.QWidget):
 
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
-        super(RR, self).__init__(parent=parent, flags=flags)
+        super(MixedReserved, self).__init__(parent=parent, flags=flags)
         self.MainLayout = QtWidgets.QVBoxLayout(self)
         # self.MainLayout.addWidget(System(self))
-        self.System = System()
-        self.MainLayout.addWidget(self.System)
+
+        self.scroll = QtWidgets.QScrollArea()
+        # self.scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        # self.scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.scroll.setWidgetResizable(True)
+
+        self.System = System(self)
+        self.scroll.setWidget(self.System)
+        self.MainLayout.addWidget(self.scroll)
+
+
 
         equal = QtWidgets.QPushButton('Հաշվել', objectName='equal')
         self.MainLayout.addWidget(equal)
@@ -24,7 +35,8 @@ class RR(QtWidgets.QWidget):
 
     def EqualCtrl(self):
 
-        values = RR.getValues(self.System)
+        values = MixedReserved.getValues(self.System)
+
         print(values)
 
     @staticmethod
@@ -34,12 +46,13 @@ class RR(QtWidgets.QWidget):
         rows = system.MainLayout.rowCount()
         cols = system.MainLayout.columnCount()
         print(rows, cols)
+        if rows is 1: return
 
         ls = []
         for row in range(1, rows):
             for col in range(0, cols):
                 elm = system.MainLayout.itemAtPosition(row, col)
-                # print(elm)
+                print(elm)
                 if elm:
                     widget = elm.widget()
                     print(widget)
@@ -47,11 +60,12 @@ class RR(QtWidgets.QWidget):
                         print(widget.System)
                         ls.append(RR.getValues(widget.System))
                     else:
-                        print(widget.grid.itemAtPosition(0, 1))
-                        ls.append((widget.grid.itemAtPosition(0, 1).widget().text(), widget.grid.itemAtPosition(1, 1).widget().text()))
-
+                        ls.append((float(widget.grid.itemAtPosition(0, 1).widget().text() or 0), float(widget.grid.itemAtPosition(1, 1).widget().text() or 0)))
+        #
+        # [RR.getValues(system.MainLayout.itemAtPosition(row, col).widget().System) if system.MainLayout.itemAtPosition(row, col).widget().sysType.currentIndex() else (system.MainLayout.itemAtPosition(row, col).widget().grid.itemAtPosition(0, 1).widget().text(), system.MainLayout.itemAtPosition(row, col).widget().grid.itemAtPosition(1, 1).widget().text())  for row in range(1, rows) for col in range(0, cols) if system.MainLayout.itemAtPosition(row, col)]
+        #
         sys_dict = {
-            'type': ["S", system.type1.currentIndex(), system.type2.currentIndex()],
+            'type': [system.type1.currentIndex(), system.type2.currentIndex()],
             'value': ls
         }
 

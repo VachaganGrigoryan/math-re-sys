@@ -5,7 +5,7 @@ from .integral import *
 
 import logging as log
 log.basicConfig(filename='text.log', filemode='w', format='%(levelname)s::%(message)s::%(asctime)s', level=log.DEBUG)
-log.info("This is a asr.py file")
+log.info("This is a non_recoverable_non_backup.py file")
 
 class Weibull:
 

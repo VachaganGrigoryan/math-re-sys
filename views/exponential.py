@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
-from models import asr
+from models import non_recoverable_non_backup
 from views.graph import StaticCanvas
 from views.table import CreateTable
 
@@ -39,7 +39,7 @@ class Exponential(QtWidgets.QWidget):
                 raise ValueError
         except:
             return
-        self.asr = asr.Exponential(lmd, t, dt)
+        self.asr = non_recoverable_non_backup.Exponential(lmd, t, dt)
 
         graphLayout = QtWidgets.QVBoxLayout(self)
         self.graphProb = StaticCanvas(self)

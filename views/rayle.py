@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
-from models import asr
+from models import non_recoverable_non_backup
 from views.graph import StaticCanvas
 from views.table import CreateTable
 
@@ -42,7 +42,7 @@ class Rayle(QtWidgets.QWidget):
         except:
             return
 
-        self.asr = asr.Rayle(lmd, t, dt)
+        self.asr = non_recoverable_non_backup.Rayle(lmd, t, dt)
         graphLayout = QtWidgets.QVBoxLayout(self)
         self.graphProb = StaticCanvas(self)
         self.graphProb.setObjectName("graphProb")

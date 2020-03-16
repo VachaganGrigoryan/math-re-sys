@@ -18,6 +18,11 @@ class MainWindowUi(QtWidgets.QMainWindow):
 
 
     def setupUi(self):
+        self.scroll = QtWidgets.QScrollArea()
+        # self.scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        # self.scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scroll.setWidgetResizable(True)
+
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
 
@@ -41,9 +46,10 @@ class MainWindowUi(QtWidgets.QMainWindow):
         self.SystemType.addItems(["", "", "", "", ""])
         self.generalLayout.addWidget(self.SystemType)
 
-        self.SystemType.currentIndexChanged.connect(self._switchView)
+        self.SystemType.currentIndexChanged.connect(self._switchSystemView)
 
-        self.setCentralWidget(self.centralwidget)
+        self.scroll.setWidget(self.centralwidget)
+        self.setCentralWidget(self.scroll)
 
         self.menubar = QtWidgets.QMenuBar(self)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 715, 40))
@@ -90,9 +96,9 @@ class MainWindowUi(QtWidgets.QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(self)
 
     
-    def _buildNRNR(self):
+    def _buildNonRecoverableNonBackup(self):
         log.info("Function _buildNRNR()")
-        self.selectedtab = QtWidgets.QTabWidget(objectName='NRNRFunction')
+        self.selectedtab = QtWidgets.QTabWidget(objectName='NonRecoverableNonBackup')
         self.selectedtab.addTab(ui.Exponential(), "Ցուցչային")
         self.selectedtab.addTab(ui.Rayle(), "Ռեյլ")
         self.selectedtab.addTab(ui.Weibull(), "Վեյբուլ")
@@ -105,35 +111,34 @@ class MainWindowUi(QtWidgets.QMainWindow):
 
 
     def _buildRNR(self):
-        log.info("Function _buildRNR()")
         tabwidget = ui.RNR()
         self.selectedtab = tabwidget
         self.generalLayout.addWidget(self.selectedtab)
 
     
     def _buildNRR(self):
-        log.info("Function _buildNRR()")
         tabwidget = ui.NRR()     
         self.selectedtab = tabwidget
         self.generalLayout.addWidget(self.selectedtab)
         
 
-    def _buildRR(self):
-        print("Any Ui 4")
-        # ui.
-        tabwidget = ui.RR()
-        self.selectedtab = tabwidget
+    def _buildRecoverableBackup(self):
+        self.selectedtab = QtWidgets.QTabWidget(objectName='RecoverableBackup')
+        self.selectedtab.addTab(ui.ReservedByPermanently(), "Մշտական")
+        self.selectedtab.addTab(ui.ReservedByReplacement(), "Փոխարինումով")
+        self.selectedtab.addTab(ui.MixedReserved(), "Խառը")
+
         self.generalLayout.addWidget(self.selectedtab)
     
-    def _switchView(self):
+    def _switchSystemView(self):
         # self.generalLayout.removeWidget(self.selectedtab)
         self.selectedtab.hide()
         switch = {
             0: lambda: '',
-            1: self._buildNRNR,
+            1: self._buildNonRecoverableNonBackup,
             2: self._buildRNR,
             3: self._buildNRR,
-            4: self._buildRR
+            4: self._buildRecoverableBackup
         }
         return switch.get(self.SystemType.currentIndex())()
 
