@@ -1,60 +1,74 @@
-import sys
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QAction, QTableWidget, QTableWidgetItem, QVBoxLayout
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+'''
+Created on 2017年4月6日
+@author: Irony."[讽刺]
+@site: https://pyqt5.com , https://github.com/892768447
+@email: 892768447@qq.com
+@file: ViewOffice
+@description:
+'''
+from PyQt5.QAxContainer import QAxWidget
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton, QFileDialog,\
+    QMessageBox
 
 
-class App(QWidget):
+__Author__ = "By: Irony.\"[讽刺]\nQQ: 892768447\nEmail: 892768447@qq.com"
+__Copyright__ = "Copyright (c) 2017 Irony.\"[讽刺]"
+__Version__ = "Version 1.0"
 
-    def __init__(self):
-        super().__init__()
-        self.title = 'PyQt5 table - pythonspot.com'
-        self.left = 0
-        self.top = 0
-        self.width = 300
-        self.height = 200
-        self.initUI()
 
-    def initUI(self):
-        self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
+class AxWidget(QWidget):
 
-        self.createTable()
+    def __init__(self, *args, **kwargs):
+        super(AxWidget, self).__init__(*args, **kwargs)
+        self.resize(800, 600)
+        layout = QVBoxLayout(self)
+        self.axWidget = QAxWidget(self)
+        layout.addWidget(self.axWidget)
+        layout.addWidget(QPushButton('选择excel,word,pdf文件',
+                                     self, clicked=self.onOpenFile))
 
-        # Add box layout, add table to box layout and add box layout to widget
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(self.tableWidget)
-        self.setLayout(self.layout)
+    def onOpenFile(self):
+        path, _ = QFileDialog.getOpenFileName(
+            self, '请选择文件', '', 'excel(*.xlsx *.xls);;word(*.docx *.doc);;pdf(*.pdf)')
+        if not path:
+            return
+        if _.find('*.doc'):
+            return self.openOffice(path, 'Word.Application')
+        if _.find('*.xls'):
+            return self.openOffice(path, 'Excel.Application')
+        if _.find('*.pdf'):
+            return self.openPdf(path)
 
-        # Show widget
-        self.show()
+    def openOffice(self, path, app):
+        self.axWidget.clear()
+        if not self.axWidget.setControl(app):
+            return QMessageBox.critical(self, '错误', '没有安装  %s' % app)
+        self.axWidget.dynamicCall(
+            'SetVisible (bool Visible)', 'false')  # 不显示窗体
+        self.axWidget.setProperty('DisplayAlerts', False)
+        self.axWidget.setControl(path)
 
-    def createTable(self):
-        # Create table
-        self.tableWidget = QTableWidget()
-        self.tableWidget.setRowCount(4)
-        self.tableWidget.setColumnCount(2)
-        self.tableWidget.setItem(0, 0, QTableWidgetItem("Cell (1,1)"))
-        self.tableWidget.setItem(0, 1, QTableWidgetItem("Cell (1,2)"))
-        self.tableWidget.setItem(1, 0, QTableWidgetItem("Cell (2,1)"))
-        self.tableWidget.setItem(1, 1, QTableWidgetItem("Cell (2,2)"))
-        self.tableWidget.setItem(2, 0, QTableWidgetItem("Cell (3,1)"))
-        self.tableWidget.setItem(2, 1, QTableWidgetItem("Cell (3,2)"))
-        self.tableWidget.setItem(3, 0, QTableWidgetItem("Cell (4,1)"))
-        self.tableWidget.setItem(3, 1, QTableWidgetItem("Cell (4,2)"))
-        self.tableWidget.move(0, 0)
+    def openPdf(self, path):
+        self.axWidget.clear()
+        if not self.axWidget.setControl('Adobe PDF Reader'):
+            return QMessageBox.critical(self, '错误', '没有安装 Adobe PDF Reader')
+        self.axWidget.dynamicCall('LoadFile(const QString&)', path)
 
-        # table selection change
-        self.tableWidget.doubleClicked.connect(self.on_click)
-
-    @pyqtSlot()
-    def on_click(self):
-        print("\n")
-        for currentQTableWidgetItem in self.tableWidget.selectedItems():
-            print(currentQTableWidgetItem.row(), currentQTableWidgetItem.column(), currentQTableWidgetItem.text())
+    def closeEvent(self, event):
+        self.axWidget.close()
+        self.axWidget.clear()
+        self.layout().removeWidget(self.axWidget)
+        del self.axWidget
+        super(AxWidget, self).closeEvent(event)
 
 
 if __name__ == '__main__':
+    import sys
+    from PyQt5.QtWidgets import QApplication
     app = QApplication(sys.argv)
-    ex = App()
+    w = AxWidget()
+    w.show()
     sys.exit(app.exec_())
