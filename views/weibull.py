@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from models import non_recoverable_non_backup
 from .graph import StaticCanvas
+from .graph2 import ChartView
 from .table import CreateTable
 
 class Weibull(QtWidgets.QWidget):
@@ -48,6 +49,7 @@ class Weibull(QtWidgets.QWidget):
         self.asr = non_recoverable_non_backup.Weibull(alpha, beta, t, dt)
         graphLayout = QtWidgets.QVBoxLayout(self)
         graphLayout.setObjectName("graph")
+
         self.graphProb = StaticCanvas(self)
         self.graphProb.setObjectName("graphProb")
         self.graphProb.plot(self.asr.T, self.asr.probability, "Graph for Probability")
@@ -58,7 +60,8 @@ class Weibull(QtWidgets.QWidget):
         self.graphDist.plot(self.asr.T, self.asr.distribution, "Graph for Distribution")
         graphLayout.addWidget(self.graphDist)
 
-        # self.createTable()
+        # view = ChartView()
+        # graphLayout.addWidget(view)
 
         self.tableWidget = CreateTable(self, t//dt, 3, ["Time", "Probability", "Distribution"], self.asr.T, self.asr.probability, self.asr.distribution)
 

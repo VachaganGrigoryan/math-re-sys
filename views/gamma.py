@@ -50,13 +50,11 @@ class Gamma(QtWidgets.QWidget):
         self.asr = non_recoverable_non_backup.Gamma(alpha, beta, t, dt)
 
         graphLayout = QtWidgets.QVBoxLayout(self)
-        self.graphProb = StaticCanvas(self)
-        self.graphProb.setObjectName("graphProb")
+        self.graphProb = StaticCanvas(self, objectName='graphProb')
         self.graphProb.plot(self.asr.T, self.asr.probability, "Graph for Probability")
         graphLayout.addWidget(self.graphProb)
 
-        self.graphDist = StaticCanvas(self)
-        self.graphDist.setObjectName("graphDist")
+        self.graphDist = StaticCanvas(self, objectName='graphDist')
         self.graphDist.plot(self.asr.T, self.asr.distribution, "Graph for Distribution")
         graphLayout.addWidget(self.graphDist)
 

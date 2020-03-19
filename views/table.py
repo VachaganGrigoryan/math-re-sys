@@ -6,7 +6,7 @@ class CreateTable(QTableWidget):
         super(CreateTable, self).__init__(parent=parent)
         self.setRowCount(row)
         self.setColumnCount(col)
-
+        # self.resize(300, 600)
         for i in range(col):
             self.setHorizontalHeaderItem(i, QTableWidgetItem(HHeaders[i]))
 

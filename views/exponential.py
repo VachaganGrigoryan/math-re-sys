@@ -1,4 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtCore import Qt
+
+from lib.AnimationShadowEffect import AnimationShadowEffect
 from models import non_recoverable_non_backup
 from views.graph import StaticCanvas
 from views.table import CreateTable
@@ -24,7 +27,11 @@ class Exponential(QtWidgets.QWidget):
 
         self.equal = QtWidgets.QPushButton("Հաշվել")
         self.layout.addWidget(self.equal, 2, 2)
-
+        # Անիմացիա  ///////////
+        aniButton = AnimationShadowEffect(Qt.red, self.equal)
+        self.equal.setGraphicsEffect(aniButton)
+        aniButton.start()
+        # /////////////
         self.setLayout(self.layout)
 
         self.equal.clicked.connect(self.EqualCtrl)

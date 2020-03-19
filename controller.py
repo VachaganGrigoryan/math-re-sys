@@ -72,8 +72,10 @@ class MainWindowUi(QtWidgets.QMainWindow):
         self.ctrl_g.setObjectName("ctrl_g")
         self.ctrl_w = QtWidgets.QAction(self)
         self.ctrl_w.setObjectName("ctrl_w")
+        self.ctrl_w.triggered.connect(self.close)
         self.ctrl_a = QtWidgets.QAction(self)
         self.ctrl_a.setObjectName("ctrl_a")
+        self.ctrl_a.triggered.connect(self.about)
         self.ctrl_c = QtWidgets.QAction(self)
         self.ctrl_c.setObjectName("ctrl_c")
         self.ctrl_p = QtWidgets.QAction(self)
@@ -141,6 +143,20 @@ class MainWindowUi(QtWidgets.QMainWindow):
             4: self._buildRecoverableBackup
         }
         return switch.get(self.SystemType.currentIndex())()
+
+    def about(self):
+        message = QtWidgets.QMessageBox()
+        message.about(self, "Մեր մասին", """ 
+        Ծրագիրը ստեղծվել է 2020 թվականին Իրինա Օհանյանի կողմից ուսումնական նկատառումներով։
+        Ստեղծված ծրագիրն հիմք է հանդիսանում դիպլոմային աշխատանքի համար։ Ծրագիրն ավճար է և թույլատրվում 
+        է օգտագործել միայն ուսումնական նպատակներով։        
+        Հեղինակային բոլոր իրավունքները պաշտպանված են և պատկանում են Իրինա Օհանյանին․
+    
+        Ծրագիրը ստեղծվել է Python 3 ծրագրավորման լեզվով։ Այստեղ օգտագործվել է մի շարք գրաֆիկական և 
+        մաթեմաթիկական գրադարաներ ինչպիսիք են PyQt5, MathPlot, Numpy, Scipy, Math և այլն.
+        """)
+        message.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        message.button(QtWidgets.QMessageBox.Ok).setText('Text')
 
 
     def retranslateUi(self):
