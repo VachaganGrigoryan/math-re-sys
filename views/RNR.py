@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
 from models import non_recoverable_non_backup
-from views.graph import StaticCanvas
+from views.graph import Graph
 
 
 class RNR(QtWidgets.QWidget):
@@ -32,19 +32,19 @@ class RNR(QtWidgets.QWidget):
 
         graphLayout = QtWidgets.QHBoxLayout(self)
 
-        self.graphProb = StaticCanvas(self)
+        self.graphProb = Graph(self)
         self.graphProb.setObjectName("graphProb")
         print(self.asr.probability)
-        self.graphProb.plot(self.asr.T, self.asr.probability, "Graph for Probability")
+        self.graphProb.plot(self.asr.T, self.asr.probability, "Անխափան աշխատանքի  հավանականություն", "t", "$P_c(t)$")
         graphLayout.addWidget(self.graphProb)
 
-        self.graphDist = StaticCanvas(self)
+        self.graphDist = Graph(self)
         self.graphDist.setObjectName("graphDist")
         print(self.asr.distribution)
-        self.graphDist.plot(self.asr.T, self.asr.distribution, "Graph for Distribution")
+        self.graphDist.plot(self.asr.T, self.asr.distribution, "Մինչև  համակարգի  խափանումը ընկած\n ժամանակահատվածի բաշխման խտություն", "t", "$f_c(t)$ ")
         graphLayout.addWidget(self.graphDist)
 
-        self.graphSysFailRate = StaticCanvas(self)
+        self.graphSysFailRate = Graph(self)
         self.graphSysFailRate.setObjectName("graphSysFailRate")
         self.graphSysFailRate.plot(self.asr.T, self.asr.system_failure_rate, "Graph for System Failure Rate")
         graphLayout.addWidget(self.graphSysFailRate)

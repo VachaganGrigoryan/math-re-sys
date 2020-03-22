@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from models import non_recoverable_non_backup
-from views.graph import StaticCanvas
-from views.table import CreateTable
+from views.graph import Graph
+from views.table import TableView
 
 
 class Normal(QtWidgets.QWidget):
@@ -50,18 +50,18 @@ class Normal(QtWidgets.QWidget):
         self.asr = non_recoverable_non_backup.Normal(m0, sig0, t, dt)
 
         graphLayout = QtWidgets.QVBoxLayout(self)
-        self.graphProb = StaticCanvas(self)
+        self.graphProb = Graph(self)
         self.graphProb.setObjectName("graphProb")
-        self.graphProb.plot(self.asr.T, self.asr.probability, "Graph for Probability")
+        self.graphProb.plot(self.asr.T, self.asr.probability, "Անխափան աշխատանքի  հավանականություն", "t", "$P_c(t)$")
         graphLayout.addWidget(self.graphProb)
 
-        self.graphDist = StaticCanvas(self)
+        self.graphDist = Graph(self)
         self.graphDist.setObjectName("graphDist")
-        self.graphDist.plot(self.asr.T, self.asr.distribution, "Graph for Distribution")
+        self.graphDist.plot(self.asr.T, self.asr.distribution, "Մինչև  համակարգի  խափանումը ընկած\n ժամանակահատվածի բաշխման խտություն", "t", "$f_c(t)$ ")
         graphLayout.addWidget(self.graphDist)
 
         tableLayout = QtWidgets.QHBoxLayout()
-        self.tableWidget = CreateTable(self, t//dt, 3, ["Time", "Probability", "Distribution"], self.asr.T, self.asr.probability, self.asr.distribution)
+        self.tableWidget = TableView(self, t // dt, 3, ["Time", "Probability", "Distribution"], self.asr.T, self.asr.probability, self.asr.distribution)
 
         tableLayout.addLayout(graphLayout)
         tableLayout.addWidget(self.tableWidget)

@@ -1,13 +1,16 @@
 from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtWidgets import QSizePolicy
+
 from models import non_recoverable_non_backup
-from .graph import StaticCanvas
+from .graph import Graph
 from .graph2 import ChartView
-from .table import CreateTable
+from .table import TableView
 
 class Weibull(QtWidgets.QWidget):
 
     def __init__(self, parent=None, *args, **kwargs):
         super(Weibull, self).__init__(parent=parent, *args, **kwargs)
+        # self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.layout = QtWidgets.QGridLayout()
         self.layout.addWidget(QtWidgets.QLabel("α :"), 0, 0)
         self.layout.addWidget(QtWidgets.QLabel("β :"), 1, 0)
@@ -50,20 +53,20 @@ class Weibull(QtWidgets.QWidget):
         graphLayout = QtWidgets.QVBoxLayout(self)
         graphLayout.setObjectName("graph")
 
-        self.graphProb = StaticCanvas(self)
-        self.graphProb.setObjectName("graphProb")
-        self.graphProb.plot(self.asr.T, self.asr.probability, "Graph for Probability")
+        self.graphProb = Graph(self)
+        # self.graphProb.setObjectName("graphProb")
+        self.graphProb.plot(self.asr.T, self.asr.probability, "Անխափան աշխատանքի  հավանականություն", "t", "$P_c(t)$")
         graphLayout.addWidget(self.graphProb)
 
-        self.graphDist = StaticCanvas(self)
-        self.graphDist.setObjectName("graphDist")
-        self.graphDist.plot(self.asr.T, self.asr.distribution, "Graph for Distribution")
+        self.graphDist = Graph(self)
+        # self.graphDist.setObjectName("graphDist")
+        self.graphDist.plot(self.asr.T, self.asr.distribution, "Մինչև  համակարգի  խափանումը ընկած\n ժամանակահատվածի բաշխման խտություն", "t", "$f_c(t)$")
         graphLayout.addWidget(self.graphDist)
 
         # view = ChartView()
         # graphLayout.addWidget(view)
 
-        self.tableWidget = CreateTable(self, t//dt, 3, ["Time", "Probability", "Distribution"], self.asr.T, self.asr.probability, self.asr.distribution)
+        self.tableWidget = TableView(self, t // dt, 3, ["Time", "Probability", "Distribution"], self.asr.T, self.asr.probability, self.asr.distribution)
 
         tableLayout = QtWidgets.QHBoxLayout()
         tableLayout.addLayout(graphLayout)

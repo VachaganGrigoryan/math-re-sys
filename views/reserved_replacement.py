@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from models import recoverable_backup
-from .graph import StaticCanvas
-from .table import CreateTable
+from .graph import Graph
+from .table import TableView
 
 class ReservedByReplacement(QtWidgets.QWidget):
 
@@ -51,19 +51,19 @@ class ReservedByReplacement(QtWidgets.QWidget):
         print(self.asr.ReadinessFunction)
         graphLayout = QtWidgets.QVBoxLayout(self)
         graphLayout.setObjectName("graph")
-        self.graphProb = StaticCanvas(self)
+        self.graphProb = Graph(self)
         self.graphProb.setObjectName("graphProb")
         self.graphProb.plot(list(range(m+1)), self.asr.ReadinessFunction, "Graph for Readiness Function")
         graphLayout.addWidget(self.graphProb)
 
-        self.graphDist = StaticCanvas(self)
+        self.graphDist = Graph(self)
         self.graphDist.setObjectName("graphDist")
         self.graphDist.plot(list(range(m+1)), self.asr.T, "Graph for Time")
         graphLayout.addWidget(self.graphDist)
 
         # self.createTable()
         # print(self.asr.Tv)
-        self.tableWidget = CreateTable(self, m+1, 4, ["r", "Kг", "T", "Tв"], self.asr.rs, self.asr.ReadinessFunction, self.asr.T, self.asr.Tv)
+        self.tableWidget = TableView(self, m + 1, 4, ["r", "Kг", "T", "Tв"], self.asr.rs, self.asr.ReadinessFunction, self.asr.T, self.asr.Tv)
 
         tableLayout = QtWidgets.QHBoxLayout()
         tableLayout.addLayout(graphLayout)

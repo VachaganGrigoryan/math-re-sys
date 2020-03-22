@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QSizePolicy, QVBoxLayout, QWidget
 from PyQt5 import QtCore, QtWidgets
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT
@@ -10,54 +10,38 @@ import random
 class PlotCanvas(FigureCanvasQTAgg):
 
     def __init__(self, parent=None, width=5, height=3, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
-
-        FigureCanvasQTAgg.__init__(self, fig)
+        self.figure = Figure(figsize=(width, height), dpi=dpi)
+        FigureCanvasQTAgg.__init__(self, self.figure)
         self.setParent(parent)
-
         FigureCanvasQTAgg.setSizePolicy(self, QSizePolicy.Fixed, QSizePolicy.Fixed)
         FigureCanvasQTAgg.updateGeometry(self)
+        # self.toolbar = NavigationToolbar2QT(canvas=self, parent=self)
 
-    def plot(self, X, Y, name=''):
-        pass
+    def plot(self, X, Y, name='', x_name='', y_name=''):
+        self.figure.clear()
+        self.figure.subplots_adjust(bottom=0.15, left=0.17)
+        self.axes = self.figure.add_subplot(111)
+        self.axes.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
+        self.axes.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
+        self.axes.set_xlabel(x_name)
+        self.axes.set_ylabel(y_name)
+        self.axes.set_title(name)
+        self.axes.plot(X, Y)
+        self.axes.format_coord = lambda x, y: ''  # f'{"%.2f"%x}\n{"%.4f"%y}'
+        self.figure.tight_layout()
+        self.draw()
 
 
-class StaticCanvas(QtWidgets.QWidget):  # QDialog
+class Graph(QWidget):  # QDialog
     """Simple canvas with a sine plot."""
 
     def __init__(self, parent=None, *args, **kwargs):  # x, y, name='',
-        super(StaticCanvas, self).__init__(parent=parent, *args, **kwargs)
+        super(Graph, self).__init__(parent=parent, *args, **kwargs)
         self.canvas = PlotCanvas(parent)
-        toolbar = NavigationToolbar2QT(self.canvas, self)
+        self.toolbar = NavigationToolbar2QT(self.canvas, self)
+        self.setLayout(QVBoxLayout())
+        self.layout().addWidget(self.toolbar)
+        self.layout().addWidget(self.canvas)
 
-        layout = QtWidgets.QVBoxLayout()
-        layout.addWidget(toolbar)
-        layout.addWidget(self.canvas)
-        self.setLayout(layout)
-
-    def plot(self, X, Y, name=''):
-        self.canvas.axes.plot(X, Y)
-        self.canvas.axes.set_title(name)
-        self.canvas.axes.format_coord = lambda x, y: ''  # f'{"%.2f"%x}\n{"%.4f"%y}'
-        self.canvas.draw()
-
-
-class DynamicCanvas(PlotCanvas):
-    """A canvas that updates itself every second with a new plot."""
-
-    def __init__(self, *args, **kwargs):
-        PlotCanvas.__init__(self, *args, **kwargs)
-        timer = QtCore.QTimer(self)
-        timer.timeout.connect(lambda: self.update_figure([1, 2, 3, 4, 5, 95], 6))
-        timer.start(1000)
-
-    def plot(self, X, Y, name=''):
-        self.axes.plot(X, Y, 'r')
-        self.axes.set_title(name)
-
-    def update_figure(self, X, n):
-        l = [random.randint(0, 100) for i in range(n)]
-        self.axes.cla()
-        self.axes.plot(X, l, 'r')
-        self.draw()
+    def plot(self, *args):
+        self.canvas.plot(*args)

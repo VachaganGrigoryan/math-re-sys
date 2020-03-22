@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
 from models import non_recoverable_non_backup
-from views.graph import StaticCanvas
+from views.graph import Graph
 
 class NRR(QtWidgets.QWidget):
 
@@ -79,7 +79,7 @@ class NRR(QtWidgets.QWidget):
         self.asr = non_recoverable_non_backup.NRR(lmd, myu, 40)
 
         graphLayout = QtWidgets.QHBoxLayout(self)
-        self.graphProb = StaticCanvas(self)
+        self.graphProb = Graph(self)
         self.graphProb.setObjectName("graphProb")
         self.graphProb.plot(self.asr.T, self.asr.FunctionAvailability, "Graph for Function Availability")
         graphLayout.addWidget(self.graphProb)

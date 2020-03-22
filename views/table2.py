@@ -23,7 +23,7 @@ class TableView(QTableView):
 
     def __init__(self, parent=None):
         super(TableView, self).__init__(parent)
-        self.resize(800, 600)
+        # self.resize(800, 600)
         self.setContextMenuPolicy(Qt.ActionsContextMenu)  # 右键菜单
         self.setEditTriggers(self.NoEditTriggers)  # 禁止编辑
         self.doubleClicked.connect(self.onDoubleClick)

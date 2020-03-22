@@ -148,12 +148,14 @@ class MainWindowUi(QtWidgets.QMainWindow):
         message = QtWidgets.QMessageBox()
         message.about(self, "Մեր մասին", """ 
         Ծրագիրը ստեղծվել է 2020 թվականին Իրինա Օհանյանի կողմից ուսումնական նկատառումներով։
-        Ստեղծված ծրագիրն հիմք է հանդիսանում դիպլոմային աշխատանքի համար։ Ծրագիրն ավճար է և թույլատրվում 
-        է օգտագործել միայն ուսումնական նպատակներով։        
-        Հեղինակային բոլոր իրավունքները պաշտպանված են և պատկանում են Իրինա Օհանյանին․
-    
+        Ստեղծված ծրագիրն հիմք է հանդիսանում ավարտական աշխատանքի համար։ Ծրագիրն ավճար է և թույլատրվում 
+        է օգտագործել միայն ուսումնական նպատակներով։
         Ծրագիրը ստեղծվել է Python 3 ծրագրավորման լեզվով։ Այստեղ օգտագործվել է մի շարք գրաֆիկական և 
-        մաթեմաթիկական գրադարաներ ինչպիսիք են PyQt5, MathPlot, Numpy, Scipy, Math և այլն.
+        մաթեմատիկական գրադարաներ, ինչպիսիք են PyQt5, MathPlot, Numpy, Scipy, Math և այլն։
+        
+        Հեղինակային բոլոր իրավունքները պաշտպանված են և պատկանում են Իրինա Օհանյանին։
+        
+        Օգտվեք և հեշտացրեք ձեր աշխատանքը։
         """)
         message.setStandardButtons(QtWidgets.QMessageBox.Ok)
         message.button(QtWidgets.QMessageBox.Ok).setText('Text')
@@ -163,10 +165,10 @@ class MainWindowUi(QtWidgets.QMainWindow):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("MainWindow", "Ավտոմատացված համակարգերի հուսալիություն"))
 
-        self.MainTitle.setText(_translate("MainTitle", "Ավտոմատացված համակարգերի հուսալիություն\n հաշվարկի ճարտարագիտական մեթոդներ"))
+        self.MainTitle.setText(_translate("MainTitle", "ԱՎՏՈՄԱՏԱՑՎԱԾ ՀԱՄԱԿԱՐԳԵՐԻ ՀՈՒՍԱԼԻՈՒԹՅԱՆ\n ՀԱՇՎԱՐԿԻ ՃԱՐՏԱՐԱԳԻՏԱԿԱՆ ՄԵԹՈԴՆԵՐ"))
 
-        self.SystemType.setItemText(0, _translate("MainWindow", "Ընտրել համակարգը"))
-        self.SystemType.setItemText(1, _translate("MainWindow", "Չպահուստավորված չվերականգնվող"))
+        self.SystemType.setItemText(0, _translate("MainWindow", "Ընտրել մեթոդը"))
+        self.SystemType.setItemText(1, _translate("MainWindow", "Չպահուստավորված չվերականգնվող համակարգի հուսալիության \n հաշվարկը հավանականությունների անմիջական \n հաշվման մեթոդով"))
         self.SystemType.setItemText(2, _translate("MainWindow", "Պահուստավորված չվերականգնվող"))
         self.SystemType.setItemText(3, _translate("MainWindow", "Չպահուստավորված վերականգնվող"))
         self.SystemType.setItemText(4, _translate("MainWindow", "Պահուստավորված վերականգնվող"))
