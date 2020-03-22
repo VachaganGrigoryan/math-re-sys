@@ -4,14 +4,23 @@ from PyQt5.QtCore import Qt
 from lib.AnimationShadowEffect import AnimationShadowEffect
 from models import non_recoverable_non_backup
 from views.graph import Graph
+from views.info import Info
 from views.table import TableView
 
 
-class Exponential(QtWidgets.QWidget):
+class Exponential(QtWidgets.QToolBox):
     def __init__(self, parent=None, *args, **kwargs):
         super(Exponential, self).__init__(parent=parent, *args, **kwargs)
 
+
+        self.addItem(QtWidgets.QWidget(), 'Հաշվարկ')
+
+        self.addItem(Info(), 'Նկարագրություն')
+        # self.widget(1)
+
         self.layout = QtWidgets.QGridLayout()
+        self.widget(0).setLayout(self.layout)
+
         self.layout.addWidget(QtWidgets.QLabel("λ :"), 0, 0)
         self.layout.addWidget(QtWidgets.QLabel("t :"), 0, 2)
         self.layout.addWidget(QtWidgets.QLabel("dt :"), 1, 2)
@@ -32,7 +41,7 @@ class Exponential(QtWidgets.QWidget):
         self.equal.setGraphicsEffect(aniButton)
         aniButton.start()
         # /////////////
-        self.setLayout(self.layout)
+        # self.setLayout(self.layout)
 
         self.equal.clicked.connect(self.EqualCtrl)
         self.layout.setAlignment(QtCore.Qt.AlignTop)
@@ -60,7 +69,7 @@ class Exponential(QtWidgets.QWidget):
         graphLayout.addWidget(self.graphDist)
 
         tableLayout = QtWidgets.QHBoxLayout()
-        self.tableWidget = TableView(self, t // dt, 3, ["Time", "Probability", "Distribution"], self.asr.T, self.asr.probability, self.asr.distribution)
+        self.tableWidget = TableView(self, t // dt, 3, ["t", "Pₕ(t)", "fₕ(t)"], self.asr.T, self.asr.probability, self.asr.distribution)
 
         tableLayout.addLayout(graphLayout)
         tableLayout.addWidget(self.tableWidget)

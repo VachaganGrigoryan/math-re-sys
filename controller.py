@@ -168,7 +168,7 @@ class MainWindowUi(QtWidgets.QMainWindow):
         self.MainTitle.setText(_translate("MainTitle", "ԱՎՏՈՄԱՏԱՑՎԱԾ ՀԱՄԱԿԱՐԳԵՐԻ ՀՈՒՍԱԼԻՈՒԹՅԱՆ\n ՀԱՇՎԱՐԿԻ ՃԱՐՏԱՐԱԳԻՏԱԿԱՆ ՄԵԹՈԴՆԵՐ"))
 
         self.SystemType.setItemText(0, _translate("MainWindow", "Ընտրել մեթոդը"))
-        self.SystemType.setItemText(1, _translate("MainWindow", "Չպահուստավորված չվերականգնվող համակարգի հուսալիության \n հաշվարկը հավանականությունների անմիջական \n հաշվման մեթոդով"))
+        self.SystemType.setItemText(1, _translate("MainWindow", "Չպահուստավորված չվերականգնվող համակարգի հուսալիության հաշվարկը հավանականությունների անմիջական հաշվման մեթոդով"))
         self.SystemType.setItemText(2, _translate("MainWindow", "Պահուստավորված չվերականգնվող"))
         self.SystemType.setItemText(3, _translate("MainWindow", "Չպահուստավորված վերականգնվող"))
         self.SystemType.setItemText(4, _translate("MainWindow", "Պահուստավորված վերականգնվող"))

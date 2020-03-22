@@ -55,7 +55,7 @@ class Rayle(QtWidgets.QWidget):
         graphLayout.addWidget(self.graphDist)
 
         tableLayout = QtWidgets.QHBoxLayout()
-        self.tableWidget = TableView(self, t // dt, 3, ["Time", "Probability", "Distribution"], self.asr.T, self.asr.probability, self.asr.distribution)
+        self.tableWidget = TableView(self, t // dt, 3, ["t", "Pₕ(t)", "fₕ(t)"], self.asr.T, self.asr.probability, self.asr.distribution)
 
         tableLayout.addLayout(graphLayout)
         tableLayout.addWidget(self.tableWidget)

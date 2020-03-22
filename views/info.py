@@ -27,7 +27,7 @@ class MathFormulaSVG(QSvgWidget):
         fig = plt.figure(figsize=(0.05, 0.05), dpi=dpi)
         figure_text = fig.text(0, 0, f'${formula}$', fontsize=size) #size=QFont().pointSize() * size)
         output = BytesIO()
-        fig.savefig(output, dpi=dpi, transparent=False, format='svg', bbox_inches='tight', pad_inches=0.0)
+        fig.savefig(output, dpi=dpi, transparent=True, format='svg', bbox_inches='tight', pad_inches=0.0)
         plt.close(fig)
 
         output.seek(0)
@@ -140,7 +140,7 @@ class TextView(QTextEdit):
 
 class Info(QtWidgets.QWidget):
 
-    def __init__(self, name='test.html', path='../documents', parent=None, **kwargs):
+    def __init__(self, name='test.html', path='./documents', parent=None, **kwargs):
         super(Info, self).__init__(parent, **kwargs)
         self.resize(500, 500)
         self.setLayout(QtWidgets.QHBoxLayout(self))
@@ -151,6 +151,7 @@ class Info(QtWidgets.QWidget):
         file.open(QFile.ReadOnly | QFile.Text)
         stream = QTextStream(file)
         content = stream.readAll()
+        file.close()
 
 
         self.renderFormula(content)
@@ -161,7 +162,7 @@ class Info(QtWidgets.QWidget):
             if start != -1:
                 self.infoView.write(text[:start])
                 end = text.find('%}')
-                print(text[start:end])
+                print(text[:start], text[start+2:end])
                 size, formula = text[start+2:end].split(':;')
                 formula = MathFormulaSVG(formula=formula, size=size)
                 self.infoView.insert(formula.image)

@@ -66,7 +66,7 @@ class Weibull(QtWidgets.QWidget):
         # view = ChartView()
         # graphLayout.addWidget(view)
 
-        self.tableWidget = TableView(self, t // dt, 3, ["Time", "Probability", "Distribution"], self.asr.T, self.asr.probability, self.asr.distribution)
+        self.tableWidget = TableView(self, t // dt, 3, ["t", "Pₕ(t)", "fₕ(t)"], self.asr.T, self.asr.probability, self.asr.distribution)
 
         tableLayout = QtWidgets.QHBoxLayout()
         tableLayout.addLayout(graphLayout)
