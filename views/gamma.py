@@ -1,42 +1,45 @@
 from PyQt5 import QtWidgets, QtCore
-from models import non_recoverable_non_backup
-from views.graph import Graph
-from views.table import TableView
+from models import Gamma as GammaModel
+from views.tools import Info, Graph, TableView
 
 
-class Gamma(QtWidgets.QWidget):
+class Gamma(QtWidgets.QToolBox):
 
     def __init__(self, parent=None, *args, **kwargs):
         super(Gamma, self).__init__(parent=parent, *args, **kwargs)
 
-        self.layout = QtWidgets.QGridLayout()
-        self.layout.addWidget(QtWidgets.QLabel("α :"), 0, 0)
-        self.layout.addWidget(QtWidgets.QLabel("β :"), 1, 0)
-        self.layout.addWidget(QtWidgets.QLabel("t :"), 0, 2)
-        self.layout.addWidget(QtWidgets.QLabel("dt :"), 1, 2)
+        self.addItem(QtWidgets.QWidget(), 'Հաշվարկ')
+        self.addItem(Info(), 'Նկարագրություն')
+        self.widget(0).setLayout(QtWidgets.QGridLayout())
+
+        self.widget(0).layout().addWidget(QtWidgets.QLabel("Մուտքային տվյալներ"), 0, 0)
+        inputW = QtWidgets.QWidget()
+        self.widget(0).layout().addWidget(inputW, 1, 0)
+        form = QtWidgets.QFormLayout(inputW)
 
         self.alpha = QtWidgets.QLineEdit()
-        self.layout.addWidget(self.alpha, 0, 1)
+        form.addRow(QtWidgets.QLabel("α  :"), self.alpha)
 
         self.beta = QtWidgets.QLineEdit()
-        self.layout.addWidget(self.beta, 1, 1)
+        form.addRow(QtWidgets.QLabel("β  :"), self.beta)
 
         self.t = QtWidgets.QLineEdit()
-        self.layout.addWidget(self.t, 0, 3)
+        form.addRow(QtWidgets.QLabel("t :"), self.t)
 
         self.dt = QtWidgets.QLineEdit()
-        self.layout.addWidget(self.dt, 1, 3)
+        form.addRow(QtWidgets.QLabel("dt :"), self.dt)
 
-        self.equal = QtWidgets.QPushButton("Հաշվել")
-        self.layout.addWidget(self.equal, 2, 2)
+        equal = QtWidgets.QPushButton("Հաշվել")
+        form.addWidget(equal)
 
-        self.setLayout(self.layout)
+        equal.clicked.connect(self.EqualCtrl)
+        form.setAlignment(QtCore.Qt.AlignTop)
 
-        self.equal.clicked.connect(self.EqualCtrl)
-
-        self.layout.setAlignment(QtCore.Qt.AlignTop)
+        self.widget(0).layout().addWidget(QtWidgets.QLabel("Համառոտ նկարագրություն"), 0, 1)
+        self.widget(0).layout().addWidget(Info(), 1, 1)
 
     def EqualCtrl(self):
+
         try:
             alpha = int(self.alpha.text())
             beta = int(self.beta.text())
@@ -47,21 +50,17 @@ class Gamma(QtWidgets.QWidget):
         except:
             return
 
-        self.asr = non_recoverable_non_backup.Gamma(alpha, beta, t, dt)
+        calc = GammaModel(alpha, beta, t, dt)
 
-        graphLayout = QtWidgets.QVBoxLayout(self)
-        self.graphProb = Graph(self, objectName='graphProb')
-        self.graphProb.plot(self.asr.T, self.asr.probability, "Անխափան աշխատանքի  հավանականություն", "t", "$P_c(t)$")
-        graphLayout.addWidget(self.graphProb)
+        table = TableView(self, len(calc.T), 3, ["t", "Pₕ(t)", "fₕ(t)"], calc.T, calc.probability, calc.distribution)
 
-        self.graphDist = Graph(self, objectName='graphDist')
-        self.graphDist.plot(self.asr.T, self.asr.distribution, "Մինչև  համակարգի  խափանումը ընկած\n ժամանակահատվածի բաշխման խտություն", "t", "$f_c(t)$ ")
-        graphLayout.addWidget(self.graphDist)
+        graphProb = Graph(self)
+        graphProb.plot(calc.T, calc.probability, "Անխափան աշխատանքի  հավանականություն", "t", "$P_c(t)$")
 
-        tableLayout = QtWidgets.QHBoxLayout()
-        self.tableWidget = TableView(self, t // dt, 3, ["t", "Pₕ(t)", "fₕ(t)"], self.asr.T, self.asr.probability, self.asr.distribution)
+        graphDist = Graph(self)
+        graphDist.plot(calc.T, calc.distribution, "Մինչև  համակարգի  խափանումը ընկած\n ժամանակահատվածի բաշխման խտություն", "t", "$f_c(t)$")
 
-        tableLayout.addLayout(graphLayout)
-        tableLayout.addWidget(self.tableWidget)
-
-        self.layout.addLayout(tableLayout, 3, 0, 3, 4)
+        self.widget(0).layout().addWidget(QtWidgets.QLabel("Ելքային տվյալներ"), 2, 0, 1, 2)
+        self.widget(0).layout().addWidget(table, 3, 0, 2, 1)
+        self.widget(0).layout().addWidget(graphProb, 3, 1)
+        self.widget(0).layout().addWidget(graphDist, 4, 1)

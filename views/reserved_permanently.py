@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from models import recoverable_backup
-from .graph import Graph
-from .table import TableView
+from views.tools.graph import Graph
+from views.tools.table import TableView
 
 class ReservedByPermanently(QtWidgets.QWidget):
 

@@ -9,11 +9,11 @@ import random
 
 class PlotCanvas(FigureCanvasQTAgg):
 
-    def __init__(self, parent=None, width=5, height=3, dpi=100):
+    def __init__(self, parent=None, width=6, height=3, dpi=100):
         self.figure = Figure(figsize=(width, height), dpi=dpi)
         FigureCanvasQTAgg.__init__(self, self.figure)
         self.setParent(parent)
-        FigureCanvasQTAgg.setSizePolicy(self, QSizePolicy.Fixed, QSizePolicy.Fixed)
+        FigureCanvasQTAgg.setSizePolicy(self, QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
         FigureCanvasQTAgg.updateGeometry(self)
         # self.toolbar = NavigationToolbar2QT(canvas=self, parent=self)
 

@@ -1,50 +1,38 @@
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtCore import Qt
-
-from lib.AnimationShadowEffect import AnimationShadowEffect
-from models import non_recoverable_non_backup
-from views.graph import Graph
-from views.info import Info
-from views.table import TableView
+from models import Exponential as ExponentialModel
+from views.tools import Info, Graph, TableView
 
 
 class Exponential(QtWidgets.QToolBox):
     def __init__(self, parent=None, *args, **kwargs):
         super(Exponential, self).__init__(parent=parent, *args, **kwargs)
 
-
         self.addItem(QtWidgets.QWidget(), 'Հաշվարկ')
-
         self.addItem(Info(), 'Նկարագրություն')
-        # self.widget(1)
+        self.widget(0).setLayout(QtWidgets.QGridLayout())
 
-        self.layout = QtWidgets.QGridLayout()
-        self.widget(0).setLayout(self.layout)
-
-        self.layout.addWidget(QtWidgets.QLabel("λ :"), 0, 0)
-        self.layout.addWidget(QtWidgets.QLabel("t :"), 0, 2)
-        self.layout.addWidget(QtWidgets.QLabel("dt :"), 1, 2)
+        self.widget(0).layout().addWidget(QtWidgets.QLabel("Մուտքային տվյալներ"), 0, 0)
+        inputW = QtWidgets.QWidget()
+        self.widget(0).layout().addWidget(inputW, 1, 0)
+        form = QtWidgets.QFormLayout(inputW)
 
         self.lmd = QtWidgets.QLineEdit()
-        self.layout.addWidget(self.lmd, 0, 1)
+        form.addRow(QtWidgets.QLabel("λ :"), self.lmd)
 
         self.t = QtWidgets.QLineEdit()
-        self.layout.addWidget(self.t, 0, 3)
+        form.addRow(QtWidgets.QLabel("t :"), self.t)
 
         self.dt = QtWidgets.QLineEdit()
-        self.layout.addWidget(self.dt, 1, 3)
+        form.addRow(QtWidgets.QLabel("dt :"), self.dt)
 
-        self.equal = QtWidgets.QPushButton("Հաշվել")
-        self.layout.addWidget(self.equal, 2, 2)
-        # Անիմացիա  ///////////
-        aniButton = AnimationShadowEffect(Qt.red, self.equal)
-        self.equal.setGraphicsEffect(aniButton)
-        aniButton.start()
-        # /////////////
-        # self.setLayout(self.layout)
+        equal = QtWidgets.QPushButton("Հաշվել")
+        form.addWidget(equal)
 
-        self.equal.clicked.connect(self.EqualCtrl)
-        self.layout.setAlignment(QtCore.Qt.AlignTop)
+        equal.clicked.connect(self.EqualCtrl)
+        form.setAlignment(QtCore.Qt.AlignTop)
+
+        self.widget(0).layout().addWidget(QtWidgets.QLabel("Համառոտ նկարագրություն"), 0, 1)
+        self.widget(0).layout().addWidget(Info(), 1, 1)
 
     def EqualCtrl(self):
         try:
@@ -55,24 +43,18 @@ class Exponential(QtWidgets.QToolBox):
                 raise ValueError
         except:
             return
-        self.asr = non_recoverable_non_backup.Exponential(lmd, t, dt)
+        calc = ExponentialModel(lmd, t, dt)
 
-        graphLayout = QtWidgets.QVBoxLayout(self)
-        self.graphProb = Graph(self)
-        self.graphProb.setObjectName("graphProb")
-        self.graphProb.plot(self.asr.T, self.asr.probability, "Անխափան աշխատանքի  հավանականություն", "t", "$P_c(t)$")
-        graphLayout.addWidget(self.graphProb)
+        table = TableView(self, len(calc.T), 3, ["t", "Pₕ(t)", "fₕ(t)"], calc.T, calc.probability, calc.distribution)
 
-        self.graphDist = Graph(self)
-        self.graphDist.setObjectName("graphDist")
-        self.graphDist.plot(self.asr.T, self.asr.distribution, "Մինչև  համակարգի  խափանումը ընկած\n ժամանակահատվածի բաշխման խտություն", "t", "$f_c(t)$")
-        graphLayout.addWidget(self.graphDist)
+        graphProb = Graph(self)
+        graphProb.plot(calc.T, calc.probability, "Անխափան աշխատանքի  հավանականություն", "t", "$P_c(t)$")
 
-        tableLayout = QtWidgets.QHBoxLayout()
-        self.tableWidget = TableView(self, t // dt, 3, ["t", "Pₕ(t)", "fₕ(t)"], self.asr.T, self.asr.probability, self.asr.distribution)
+        graphDist = Graph(self)
+        graphDist.plot(calc.T, calc.distribution, "Մինչև  համակարգի  խափանումը ընկած\n ժամանակահատվածի բաշխման խտություն", "t", "$f_c(t)$")
 
-        tableLayout.addLayout(graphLayout)
-        tableLayout.addWidget(self.tableWidget)
-
-        self.layout.addLayout(tableLayout, 3, 0, 3, 4)
+        self.widget(0).layout().addWidget(QtWidgets.QLabel("Ելքային տվյալներ"), 2, 0, 1, 2)
+        self.widget(0).layout().addWidget(table, 3, 0, 2, 1)
+        self.widget(0).layout().addWidget(graphProb, 3, 1)
+        self.widget(0).layout().addWidget(graphDist, 4, 1)
 

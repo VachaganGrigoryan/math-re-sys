@@ -1,42 +1,45 @@
 from PyQt5 import QtWidgets, QtCore
-from models import non_recoverable_non_backup
-from views.graph import Graph
-from views.table import TableView
+from models import Normal as NormalModel
+from views.tools import Info, Graph, TableView
 
 
-class Normal(QtWidgets.QWidget):
+class Normal(QtWidgets.QToolBox):
 
     def __init__(self, parent=None, *args, **kwargs):
         super(Normal, self).__init__(parent=parent, *args, **kwargs)
 
-        self.layout = QtWidgets.QGridLayout()
-        self.layout.addWidget(QtWidgets.QLabel("m˳ :"), 0, 0)
-        self.layout.addWidget(QtWidgets.QLabel("Ϭ˳ :"), 1, 0)
-        self.layout.addWidget(QtWidgets.QLabel("t :"), 0, 2)
-        self.layout.addWidget(QtWidgets.QLabel("dt :"), 1, 2)
+        self.addItem(QtWidgets.QWidget(), 'Հաշվարկ')
+        self.addItem(Info(), 'Նկարագրություն')
+        self.widget(0).setLayout(QtWidgets.QGridLayout())
+
+        self.widget(0).layout().addWidget(QtWidgets.QLabel("Մուտքային տվյալներ"), 0, 0)
+        inputW = QtWidgets.QWidget()
+        self.widget(0).layout().addWidget(inputW, 1, 0)
+        form = QtWidgets.QFormLayout(inputW)
 
         self.m0 = QtWidgets.QLineEdit()
-        self.layout.addWidget(self.m0, 0, 1)
+        form.addRow(QtWidgets.QLabel("m˳ :"), self.m0)
 
         self.sig0 = QtWidgets.QLineEdit()
-        self.layout.addWidget(self.sig0, 1, 1)
+        form.addRow(QtWidgets.QLabel("Ϭ˳ :"), self.sig0)
 
         self.t = QtWidgets.QLineEdit()
-        self.layout.addWidget(self.t, 0, 3)
+        form.addRow(QtWidgets.QLabel("t :"), self.t)
 
         self.dt = QtWidgets.QLineEdit()
-        self.layout.addWidget(self.dt, 1, 3)
+        form.addRow(QtWidgets.QLabel("dt :"), self.dt)
 
-        self.equal = QtWidgets.QPushButton("Հաշվել")
-        self.layout.addWidget(self.equal, 2, 2)
+        equal = QtWidgets.QPushButton("Հաշվել")
+        form.addWidget(equal)
 
-        self.setLayout(self.layout)
+        equal.clicked.connect(self.EqualCtrl)
+        form.setAlignment(QtCore.Qt.AlignTop)
 
-        self.equal.clicked.connect(self.EqualCtrl)
-
-        self.layout.setAlignment(QtCore.Qt.AlignTop)
+        self.widget(0).layout().addWidget(QtWidgets.QLabel("Համառոտ նկարագրություն"), 0, 1)
+        self.widget(0).layout().addWidget(Info(), 1, 1)
 
     def EqualCtrl(self):
+        #ToDo Refactoring Try block and creating Decorator for value checking
         try:
             m0 = int(self.m0.text())
             sig0 = int(self.sig0.text())
@@ -44,27 +47,23 @@ class Normal(QtWidgets.QWidget):
             dt = int(self.dt.text())
             if m0<=0 or sig0<=0 or t<1 or dt<1:
                 raise ValueError
-        except:
+        except ValueError:
             return
 
-        self.asr = non_recoverable_non_backup.Normal(m0, sig0, t, dt)
+        calc = NormalModel(m0, sig0, t, dt)
 
-        graphLayout = QtWidgets.QVBoxLayout(self)
-        self.graphProb = Graph(self)
-        self.graphProb.setObjectName("graphProb")
-        self.graphProb.plot(self.asr.T, self.asr.probability, "Անխափան աշխատանքի  հավանականություն", "t", "$P_c(t)$")
-        graphLayout.addWidget(self.graphProb)
+        #ToDo Refactoring this block and creating optimal DRY code for all Methods
+        table = TableView(self, len(calc.T), 3, ["t", "Pₕ(t)", "fₕ(t)"], calc.T, calc.probability, calc.distribution)
 
-        self.graphDist = Graph(self)
-        self.graphDist.setObjectName("graphDist")
-        self.graphDist.plot(self.asr.T, self.asr.distribution, "Մինչև  համակարգի  խափանումը ընկած\n ժամանակահատվածի բաշխման խտություն", "t", "$f_c(t)$ ")
-        graphLayout.addWidget(self.graphDist)
+        graphProb = Graph(self)
+        graphProb.plot(calc.T, calc.probability, "Անխափան աշխատանքի  հավանականություն", "t", "$P_c(t)$")
 
-        tableLayout = QtWidgets.QHBoxLayout()
-        self.tableWidget = TableView(self, t // dt, 3, ["t", "Pₕ(t)", "fₕ(t)"], self.asr.T, self.asr.probability, self.asr.distribution)
+        graphDist = Graph(self)
+        graphDist.plot(calc.T, calc.distribution,
+                       "Մինչև  համակարգի  խափանումը ընկած\n ժամանակահատվածի բաշխման խտություն", "t", "$f_c(t)$")
 
-        tableLayout.addLayout(graphLayout)
-        tableLayout.addWidget(self.tableWidget)
-
-        self.layout.addLayout(tableLayout, 3, 0, 3, 4)
+        self.widget(0).layout().addWidget(QtWidgets.QLabel("Ելքային տվյալներ"), 2, 0, 1, 2)
+        self.widget(0).layout().addWidget(table, 3, 0, 2, 1)
+        self.widget(0).layout().addWidget(graphProb, 3, 1)
+        self.widget(0).layout().addWidget(graphDist, 4, 1)
 

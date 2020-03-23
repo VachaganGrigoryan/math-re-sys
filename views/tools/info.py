@@ -127,7 +127,7 @@ class TextView(QTextEdit):
         self.moveCursor(QTextCursor.Start)
 
     def copyData(self):
-        print("Copy")
+        # print("Copy")
         QApplication.clipboard().setImage()
 
     def __getattr__(self, attr):
@@ -138,14 +138,10 @@ class TextView(QTextEdit):
         self.textCursor().insertFragment(fragment)
         self.moveCursor(QTextCursor.Start)
 
-class Info(QtWidgets.QWidget):
+class Info(TextView):
 
     def __init__(self, name='test.html', path='./documents', parent=None, **kwargs):
         super(Info, self).__init__(parent, **kwargs)
-        self.resize(500, 500)
-        self.setLayout(QtWidgets.QHBoxLayout(self))
-        self.infoView = TextView()
-        self.layout().addWidget(self.infoView)
 
         file = QFile(f'{path}/{name}')
         file.open(QFile.ReadOnly | QFile.Text)
@@ -160,15 +156,15 @@ class Info(QtWidgets.QWidget):
         def _render(text):
             start = text.find('{%')
             if start != -1:
-                self.infoView.write(text[:start])
+                self.write(text[:start])
                 end = text.find('%}')
-                print(text[:start], text[start+2:end])
+                # print(text[:start], text[start+2:end])
                 size, formula = text[start+2:end].split(':;')
                 formula = MathFormulaSVG(formula=formula, size=size)
-                self.infoView.insert(formula.image)
+                self.insert(formula.image)
                 _render(text[end+2:])
             else:
-                self.infoView.write(text)
+                self.write(text)
         _render(content)
 
 
@@ -176,7 +172,10 @@ if __name__ == '__main__':
 
     app = QtWidgets.QApplication(sys.argv)
 
-    widgets = Info('weibull.html')
+    widgets = QtWidgets.QWidget()
+    widgets.setLayout(QVBoxLayout())
+    widgets.resize(500, 500)
+    widgets.layout().addWidget(Info())
     widgets.show()
 
     sys.exit(app.exec_())

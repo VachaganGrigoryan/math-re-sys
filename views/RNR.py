@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
 from models import non_recoverable_non_backup
-from views.graph import Graph
+from views.tools.graph import Graph
 
 
 class RNR(QtWidgets.QWidget):

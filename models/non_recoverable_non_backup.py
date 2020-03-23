@@ -14,7 +14,7 @@ class Weibull:
         self.beta = beta
         self.t = t
         self.dt = dt
-        self.T = list(range(0, t, dt))
+        self.T = list(range(0, t+1, dt))
     
 
     @property
@@ -44,7 +44,7 @@ class Gamma:
         self.beta = beta
         self.t = t
         self.dt = dt
-        self.T = list(range(0,t,dt))
+        self.T = list(range(0, t+1, dt))
     
 
     @property
@@ -74,7 +74,7 @@ class Rayle:
         self.lmd = lmd
         self.t = t
         self.dt = dt
-        self.T = list(range(0,t,dt))
+        self.T = list(range(0, t+1, dt))
     
 
     @property
@@ -104,7 +104,7 @@ class Exponential:
         self.lmd = lmd
         self.t = t
         self.dt = dt
-        self.T = list(range(0,t,dt))
+        self.T = list(range(0, t+1, dt))
     
 
     @property
@@ -135,7 +135,7 @@ class Normal:
         self.sig0 = sig0
         self.t = t
         self.dt = dt
-        self.T = list(range(0,t,dt))
+        self.T = list(range(0, t+1, dt))
     
 
     @property

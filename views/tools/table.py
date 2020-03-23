@@ -1,3 +1,4 @@
+from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QApplication, QMessageBox, QAction, QSizePolicy
@@ -21,6 +22,11 @@ class TableView(QTableWidget):
 
         self.initHeader()
         self.initData()
+        # self.horizontalHeader().ResizeMode(QtWidgets.QHeaderView.Interactive)
+        # header = self.horizontalHeader()
+        # header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
+        # header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        # header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
 
 
 
@@ -80,8 +86,10 @@ class TableView(QTableWidget):
         QMessageBox.information(self, "Հուշում", "Պատճենվել է")
 
     def initHeader(self):
+        header = self.horizontalHeader()
         for i in range(self.columnCount()):
             self.setHorizontalHeaderItem(i, QTableWidgetItem(self.headers[i]))
+            header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
 
     def initData(self):
         for item in zip(range(self.rowCount()), *self.args):
