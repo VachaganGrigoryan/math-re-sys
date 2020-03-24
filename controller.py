@@ -100,15 +100,13 @@ class MainWindowUi(QtWidgets.QMainWindow):
     
     def _buildNonRecoverableNonBackup(self):
         log.info("Function _buildNRNR()")
-        self.selectedtab = QtWidgets.QTabWidget(objectName='NonRecoverableNonBackup')
+        self.selectedtab = QtWidgets.QTabWidget()
         self.selectedtab.addTab(ui.Exponential(), "Ցուցչային")
         self.selectedtab.addTab(ui.Rayle(), "Ռեյլ")
         self.selectedtab.addTab(ui.Weibull(), "Վեյբուլ")
         self.selectedtab.addTab(ui.Gamma(), "Գամմա")
         self.selectedtab.addTab(ui.Normal(), "Նորմալ")
 
-        # tabwidget.setFont(QFont("Times", 15, QFont.Bold))
-        # self.selectedtab = tabwidget
         self.generalLayout.addWidget(self.selectedtab)
 
 

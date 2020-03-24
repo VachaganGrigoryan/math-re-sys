@@ -36,7 +36,7 @@ class Normal(QtWidgets.QToolBox):
         form.setAlignment(QtCore.Qt.AlignTop)
 
         self.widget(0).layout().addWidget(QtWidgets.QLabel("Համառոտ նկարագրություն"), 0, 1)
-        self.widget(0).layout().addWidget(Info(), 1, 1)
+        self.widget(0).layout().addWidget(Info('normal_short.html'), 1, 1)
 
     def EqualCtrl(self):
         #ToDo Refactoring Try block and creating Decorator for value checking

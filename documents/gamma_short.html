@@ -4,7 +4,7 @@
 <style>
     body {
         background-color: powderblue;
-        text-align: center;
+        text-align: center !important;
     }
     h1 {color: green;}
     h3 {
@@ -22,18 +22,18 @@
 </style>
 </head>
 <body>
-<h3>Վեյբուլի մեթոդ</h3>
+<h3>Գամմա մեթոդ</h3>
 <p>
     Անխափան աշխատանքի հավանականություն ՝
     <br>
 </p>
-    {%30 :; P_w(t)=e^{-(\frac{t}{\beta})^\alpha} %}
+    {%30 :; P_g(t)=\int_t^\infty \frac{x^{\alpha-1}}{\beta^\alpha G(\alpha)} e^{-\frac{x}{\beta}} \, dx %}
 <p>
     <br>
     Անխափան աշխատանքի ժամանակահատվածում հավանականություն բաշխման խտությունը ՝
     <br>
 </p>
-    {%30 :; f_w(t)=\frac{\alpha t^{\alpha-1}}{\beta^\alpha}e^{-(\frac{t}{\beta})^\alpha} %}
+    {%30 :; f_g(t)=\frac{t^{\alpha-1}}{\beta^\alpha G(\alpha)} e^{-\frac{t}{\beta}} %}
 <p>
     <br>
     {%16 :; P_h(t) %}-ն <i>t</i> ժամանակում համակարգի անխափան աշխատանքի հավանականությունն է
@@ -44,6 +44,7 @@
     <br>
     {%16 :; f_h(t)%}-ն մինչև խափանումը ընկած ժամանակահատվածի խտության բաշխումն է
 </p>
+
 
 </body>
 </html>

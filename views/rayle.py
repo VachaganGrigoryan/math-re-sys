@@ -33,7 +33,7 @@ class Rayle(QtWidgets.QToolBox):
         form.setAlignment(QtCore.Qt.AlignTop)
 
         self.widget(0).layout().addWidget(QtWidgets.QLabel("Համառոտ նկարագրություն"), 0, 1)
-        self.widget(0).layout().addWidget(Info(), 1, 1)
+        self.widget(0).layout().addWidget(Info('rayle_short.html'), 1, 1)
 
     def EqualCtrl(self):
         try:

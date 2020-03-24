@@ -9,7 +9,7 @@ class Weibull(QtWidgets.QToolBox):
         super(Weibull, self).__init__(parent=parent, *args, **kwargs)
 
         self.addItem(QtWidgets.QWidget(), 'Հաշվարկ')
-        self.addItem(Info('weibull.html'), 'Նկարագրություն')
+        self.addItem(Info(), 'Նկարագրություն')
         self.widget(0).setLayout(QtWidgets.QGridLayout())
 
         self.widget(0).layout().addWidget(QtWidgets.QLabel("Մուտքային տվյալներ"), 0, 0)
