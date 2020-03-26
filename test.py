@@ -31,3 +31,7 @@
 # window.show()
 #
 # sys.exit(application.exec_())
+
+import numpy
+numpy.seterr(divide='ignore', invalid='ignore')
+print(numpy.divide(1, 0))

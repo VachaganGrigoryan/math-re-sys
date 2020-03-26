@@ -9,7 +9,7 @@ class Weibull(QtWidgets.QToolBox):
         super(Weibull, self).__init__(parent=parent, *args, **kwargs)
 
         self.addItem(QtWidgets.QWidget(), 'Հաշվարկ')
-        self.addItem(Info(), 'Նկարագրություն')
+        # self.addItem(Info(), 'Նկարագրություն')
         self.widget(0).setLayout(QtWidgets.QGridLayout())
 
         self.widget(0).layout().addWidget(QtWidgets.QLabel("Մուտքային տվյալներ"), 0, 0)
@@ -61,7 +61,11 @@ class Weibull(QtWidgets.QToolBox):
         graphDist.plot(calc.T, calc.distribution,
                        "Մինչև  համակարգի  խափանումը ընկած\n ժամանակահատվածի բաշխման խտություն", "t", "$f_c(t)$")
 
+        graphRate = Graph(self)
+        graphRate.plot(calc.T, calc.failure_rate, "Համակարգի խափանման ինտեսիվություն", "t", "$\lambda_c(t)$")
+
         self.widget(0).layout().addWidget(QtWidgets.QLabel("Ելքային տվյալներ"), 2, 0, 1, 2)
         self.widget(0).layout().addWidget(table, 3, 0, 2, 1)
         self.widget(0).layout().addWidget(graphProb, 3, 1)
         self.widget(0).layout().addWidget(graphDist, 4, 1)
+        self.widget(0).layout().addWidget(graphRate, 5, 1)

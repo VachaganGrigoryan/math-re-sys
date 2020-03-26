@@ -5,6 +5,9 @@ from PyQt5.QtGui import QFont
 import views as ui
 
 import logging as log
+
+from views.tools import Info
+
 log.basicConfig(filename='text.log', filemode='w', format='%(message)s::%(levelname)s::%(asctime)s', level=log.DEBUG)
 log.info("This is a controller.py file")
 
@@ -100,6 +103,8 @@ class MainWindowUi(QtWidgets.QMainWindow):
     
     def _buildNonRecoverableNonBackup(self):
         log.info("Function _buildNRNR()")
+        tried = QtWidgets.QToolBox()
+
         self.selectedtab = QtWidgets.QTabWidget()
         self.selectedtab.addTab(ui.Exponential(), "Ցուցչային")
         self.selectedtab.addTab(ui.Rayle(), "Ռեյլ")
@@ -107,8 +112,9 @@ class MainWindowUi(QtWidgets.QMainWindow):
         self.selectedtab.addTab(ui.Gamma(), "Գամմա")
         self.selectedtab.addTab(ui.Normal(), "Նորմալ")
 
-        self.generalLayout.addWidget(self.selectedtab)
-
+        tried.addItem(self.selectedtab, 'Հաշվարկ')
+        tried.addItem(Info(), 'Նկարագրություն')
+        self.generalLayout.addWidget(tried)
 
     def _buildRNR(self):
         tabwidget = ui.RNR()
