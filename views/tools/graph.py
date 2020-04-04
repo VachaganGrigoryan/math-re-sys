@@ -4,8 +4,6 @@ from PyQt5 import QtCore, QtWidgets
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT
 from matplotlib.figure import Figure
 
-import random
-
 
 class PlotCanvas(FigureCanvasQTAgg):
 

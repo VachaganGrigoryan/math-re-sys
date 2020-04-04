@@ -1,3 +1,5 @@
-from .non_recoverable_non_backup import Exponential, Rayle, Weibull, Gamma, Normal
+from .non_backup_non_recoverable import Exponential, Rayle, Weibull, Gamma, Normal, Consecutive
 
-__all__: object = ['Exponential', 'Rayle', 'Weibull', 'Gamma', 'Normal']
+from .non_backup_recoverable import Primary
+
+__all__: object = ['Exponential', 'Rayle', 'Weibull', 'Gamma', 'Normal', 'Consecutive', 'Primary']

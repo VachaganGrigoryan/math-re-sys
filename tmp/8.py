@@ -7,7 +7,8 @@ exc = reduce(lambda a, b: f"({a})+({b})-({a})*({b})", Ft)
 a = b = d = e = 0.9
 c = 0.8
 
-print( "P : ", eval("c*((a+d-a*d)*(b+e-b*e))+(1-c)*(a*b+d*e-a*b*d*e)"))
+print( "P : ", eval(exc))
+print(eval("c*((a+d-a*d)*(b+e-b*e))+(1-c)*(a*b+d*e-a*b*d*e)"))
 
 # k = c
 # c = 1

@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
-from models import non_recoverable_non_backup
+from models import non_backup_non_recoverable
 from views.tools.graph import Graph
 
 
@@ -28,7 +28,7 @@ class RNR(QtWidgets.QWidget):
         self.layout.setAlignment(QtCore.Qt.AlignTop)
 
     def EqualCtrl(self):
-        self.asr = non_recoverable_non_backup.RNR(int(self.m.text()), float(self.lmd.text()), 100)
+        self.asr = non_backup_non_recoverable.RNR(int(self.m.text()), float(self.lmd.text()), 100)
 
         graphLayout = QtWidgets.QHBoxLayout(self)
 

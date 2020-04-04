@@ -1,12 +1,12 @@
 from PyQt5 import QtWidgets, QtCore
-from models import recoverable_backup
+from models import backup_recoverable
 from views.tools.graph import Graph
 from views.tools.table import TableView
 
-class ReservedByPermanently(QtWidgets.QWidget):
+class BackupByPermanently(QtWidgets.QWidget):
 
     def __init__(self, parent=None, *args, **kwargs):
-        super(ReservedByPermanently, self).__init__(parent=parent, *args, **kwargs)
+        super(BackupByPermanently, self).__init__(parent=parent, *args, **kwargs)
         self.layout = QtWidgets.QGridLayout()
         self.layout.addWidget(QtWidgets.QLabel("m :"), 0, 0)
         self.layout.addWidget(QtWidgets.QLabel("r :"), 1, 0)
@@ -47,7 +47,7 @@ class ReservedByPermanently(QtWidgets.QWidget):
 
         print(m, r, lmd, myu)
 
-        self.asr = recoverable_backup.ReservedByPermanently(m, r, lmd, myu)
+        self.asr = backup_recoverable.ReservedByPermanently(m, r, lmd, myu)
         print(self.asr.ReadinessFunction)
         graphLayout = QtWidgets.QVBoxLayout(self)
         graphLayout.setObjectName("graph")

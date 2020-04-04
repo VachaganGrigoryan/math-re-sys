@@ -2,13 +2,13 @@ import math
 
 from PyQt5 import QtCore, QtWidgets
 
-from models.recoverable_backup import *
+from models.backup_recoverable import *
 
 
-class MixedReserved(QtWidgets.QWidget):
+class BackupMixed(QtWidgets.QWidget):
 
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
-        super(MixedReserved, self).__init__(parent=parent, flags=flags)
+        super(BackupMixed, self).__init__(parent=parent, flags=flags)
         self.MainLayout = QtWidgets.QVBoxLayout(self)
         # self.MainLayout.addWidget(System(self))
 
@@ -35,7 +35,7 @@ class MixedReserved(QtWidgets.QWidget):
 
     def EqualCtrl(self):
 
-        values = MixedReserved.getValues(self.System)
+        values = BackupMixed.getValues(self.System)
 
         print(values)
 
@@ -58,7 +58,7 @@ class MixedReserved(QtWidgets.QWidget):
                     print(widget)
                     if widget.sysType.currentIndex():
                         print(widget.System)
-                        ls.append(RR.getValues(widget.System))
+                        ls.append(BackupMixed.getValues(widget.System))
                     else:
                         ls.append((float(widget.grid.itemAtPosition(0, 1).widget().text() or 0), float(widget.grid.itemAtPosition(1, 1).widget().text() or 0)))
         #

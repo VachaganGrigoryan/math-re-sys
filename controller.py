@@ -101,20 +101,22 @@ class MainWindowUi(QtWidgets.QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(self)
 
     
-    def _buildNonRecoverableNonBackup(self):
-        log.info("Function _buildNRNR()")
-        tried = QtWidgets.QToolBox()
+    def _buildNonBackupNonRecoverable(self):
+        log.info("Function _build_buildNonBackupNonRecoverable()")
+        # tried = QtWidgets.QToolBox()
 
         self.selectedtab = QtWidgets.QTabWidget()
+        self.selectedtab.addTab(ui.Consecutive(), "Հաջորդական")
         self.selectedtab.addTab(ui.Exponential(), "Ցուցչային")
         self.selectedtab.addTab(ui.Rayle(), "Ռեյլ")
         self.selectedtab.addTab(ui.Weibull(), "Վեյբուլ")
         self.selectedtab.addTab(ui.Gamma(), "Գամմա")
         self.selectedtab.addTab(ui.Normal(), "Նորմալ")
 
-        tried.addItem(self.selectedtab, 'Հաշվարկ')
-        tried.addItem(Info(), 'Նկարագրություն')
-        self.generalLayout.addWidget(tried)
+        # tried.addItem(self.selectedtab, 'Հաշվարկ')
+        # tried.addItem(Info(), 'Նկարագրություն')
+
+        self.generalLayout.addWidget(self.selectedtab)
 
     def _buildRNR(self):
         tabwidget = ui.RNR()
@@ -123,16 +125,16 @@ class MainWindowUi(QtWidgets.QMainWindow):
 
     
     def _buildNRR(self):
-        tabwidget = ui.NRR()     
+        tabwidget = ui.Primary()
         self.selectedtab = tabwidget
         self.generalLayout.addWidget(self.selectedtab)
         
 
-    def _buildRecoverableBackup(self):
-        self.selectedtab = QtWidgets.QTabWidget(objectName='RecoverableBackup')
-        self.selectedtab.addTab(ui.ReservedByPermanently(), "Մշտական")
-        self.selectedtab.addTab(ui.ReservedByReplacement(), "Փոխարինումով")
-        self.selectedtab.addTab(ui.MixedReserved(), "Խառը")
+    def _buildBackupRecoverable(self):
+        self.selectedtab = QtWidgets.QTabWidget()
+        self.selectedtab.addTab(ui.BackupByPermanently(), "Մշտական")
+        self.selectedtab.addTab(ui.BackupByReplacement(), "Փոխարինումով")
+        self.selectedtab.addTab(ui.BackupMixed(), "Խառը")
 
         self.generalLayout.addWidget(self.selectedtab)
     
@@ -141,10 +143,10 @@ class MainWindowUi(QtWidgets.QMainWindow):
         self.selectedtab.hide()
         switch = {
             0: lambda: '',
-            1: self._buildNonRecoverableNonBackup,
+            1: self._buildNonBackupNonRecoverable,
             2: self._buildRNR,
             3: self._buildNRR,
-            4: self._buildRecoverableBackup
+            4: self._buildBackupRecoverable
         }
         return switch.get(self.SystemType.currentIndex())()
 
