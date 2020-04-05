@@ -5,7 +5,7 @@ log.basicConfig(filename='../text.log', filemode='w', format='%(message)s::%(lev
 log.info("This is a backup_mixed.py file")
 
 from .non_backup_non_recoverable import *
-from .non_backup_recoverable import Primary
+from .non_backup_recoverable import *
 from .backup_recoverable import *
 
 from .RNR import RNR

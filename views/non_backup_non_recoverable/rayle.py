@@ -26,6 +26,9 @@ class Rayle(QtWidgets.QToolBox):
         self.dt = QtWidgets.QLineEdit()
         form.addRow(QtWidgets.QLabel("dt :"), self.dt)
 
+        self.error = QtWidgets.QLabel("Մուտքագրել համապատասխան տվյալները", objectName='error')
+        form.addWidget(self.error)
+
         equal = QtWidgets.QPushButton("Հաշվել")
         form.addWidget(equal)
 
@@ -43,9 +46,18 @@ class Rayle(QtWidgets.QToolBox):
             if lmd<=0 or t<1 or dt<1:
                 raise ValueError
         except:
+            self.error.setText("Մուտքային տվյալները սխալ են")
+            self.error.show()
             return
 
         calc = RayleModel(lmd, t, dt)
+
+        if calc is None:
+            self.error.setText("Հաշվարկային սխալ (0֊ի բաժանում), \nխնդրում ենք ճշգրտել մուտքային տվյալները․")
+            self.error.show()
+            return
+
+        self.error.hide()
 
         table = TableView(self, len(calc.T), 3, ["t", "Pₕ(t)", "fₕ(t)"], calc.T, calc.probability, calc.distribution)
 

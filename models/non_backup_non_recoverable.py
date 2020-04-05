@@ -5,21 +5,11 @@ from .integral import Integral
 
 import logging as log
 
+from .math_errors import MathErrors
+
 log.basicConfig(filename='text.log', filemode='w', format='%(levelname)s::%(message)s::%(asctime)s', level=log.DEBUG)
 log.info("This is a non_backup_non_recoverable.py file")
 numpy.seterr(divide='ignore', invalid='ignore')
-
-
-class MathErrors:
-
-    def __init__(self, cls):
-        self.cls = cls
-
-    def __call__(self, *args, **kwargs):
-        try:
-            return self.cls(*args, **kwargs)
-        except:
-            return None
 
 
 class System:

@@ -29,6 +29,9 @@ class Normal(QtWidgets.QToolBox):
         self.dt = QtWidgets.QLineEdit()
         form.addRow(QtWidgets.QLabel("dt :"), self.dt)
 
+        self.error = QtWidgets.QLabel("Մուտքագրել համապատասխան տվյալները", objectName='error')
+        form.addWidget(self.error)
+
         equal = QtWidgets.QPushButton("Հաշվել")
         form.addWidget(equal)
 
@@ -48,9 +51,18 @@ class Normal(QtWidgets.QToolBox):
             if m0<=0 or sig0<=0 or t<1 or dt<1:
                 raise ValueError
         except ValueError:
+            self.error.setText("Մուտքային տվյալները սխալ են")
+            self.error.show()
             return
 
         calc = NormalModel(m0, sig0, t, dt)
+
+        if calc is None:
+            self.error.setText("Հաշվարկային սխալ (0֊ի բաժանում), \nխնդրում ենք ճշգրտել մուտքային տվյալները․")
+            self.error.show()
+            return
+
+        self.error.hide()
 
         #ToDo Refactoring this block and creating optimal DRY code for all Methods
         table = TableView(self, len(calc.T), 3, ["t", "Pₕ(t)", "fₕ(t)"], calc.T, calc.probability, calc.distribution)

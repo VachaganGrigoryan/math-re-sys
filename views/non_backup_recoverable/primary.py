@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
-from models import Primary as PrimaryModel
+from models import Primary as PrimaryModel, Primary2 as PrimaryModel2
 from views.tools import Info, Graph, TableView
 
 class Primary(QtWidgets.QToolBox):
@@ -12,18 +12,25 @@ class Primary(QtWidgets.QToolBox):
         self.widget(0).setLayout(QtWidgets.QGridLayout())
 
         self.widget(0).layout().addWidget(QtWidgets.QLabel("Մուտքային տվյալներ"), 0, 0)
+        self.mainWidget = QtWidgets.QWidget()
+        self.widget(0).layout().addWidget(self.mainWidget, 1, 0)
+        self.mainWidget.setLayout(QtWidgets.QGridLayout())
+
         inputW = QtWidgets.QWidget()
-        self.widget(0).layout().addWidget(inputW, 1, 0)
-        self.form = QtWidgets.QFormLayout(inputW)
+        self.mainWidget.layout().addWidget(inputW)
+        form = QtWidgets.QFormLayout(inputW)
 
         self.count = QtWidgets.QLineEdit()
-        self.form.addRow(QtWidgets.QLabel("N :"), self.count)
+        form.addRow(QtWidgets.QLabel("N :"), self.count)
+        self.isSame = QtWidgets.QCheckBox('Էլեմենտների վերականգման ուժգնությունը միանման է')
+        form.addWidget(self.isSame)
 
         create = QtWidgets.QPushButton("Ստեղծել")
-        self.form.addWidget(create)
+        form.addWidget(create)
 
         create.clicked.connect(self.CreateCtrl)
-        self.form.setAlignment(QtCore.Qt.AlignTop)
+        form.setAlignment(QtCore.Qt.AlignTop)
+        self.mainWidget.layout().setAlignment(QtCore.Qt.AlignTop)
 
         self.widget(0).layout().addWidget(QtWidgets.QLabel("Համառոտ նկարագրություն"), 0, 1)
         self.widget(0).layout().addWidget(Info(), 1, 1)
@@ -32,27 +39,45 @@ class Primary(QtWidgets.QToolBox):
 
         try:
             count = int(self.count.text())
+            self.isSame = self.isSame.isChecked()
         except:
             return
 
-        deleteItemsOfLayout(self.form)
+        deleteItemsOfLayout(self.mainWidget.layout())
+
+        input1 = QtWidgets.QWidget()
+        input2 = QtWidgets.QWidget()
+        form1 = QtWidgets.QFormLayout(input1)
+        form2 = QtWidgets.QFormLayout(input2)
+        self.mainWidget.layout().addWidget(input1, 0, 0)
+        self.mainWidget.layout().addWidget(input2, 0, 1)
 
         self.lmds = []
+        self.myus = []
         for i in range(count):
             self.lmds.append(QtWidgets.QLineEdit())
-            self.form.addRow(QtWidgets.QLabel(f"λ[{i+1}] :"), self.lmds[i])
+            form1.addRow(QtWidgets.QLabel(f"λ[{i+1}] :"), self.lmds[i])
+            if not self.isSame:
+                self.myus.append(QtWidgets.QLineEdit())
+                form2.addRow(QtWidgets.QLabel(f"μ[{i+1}] :"), self.myus[i])
 
-        self.myu = QtWidgets.QLineEdit()
-        self.form.addRow(QtWidgets.QLabel("μ :"), self.myu)
+        if self.isSame:
+            self.myu = QtWidgets.QLineEdit()
+            form1.addRow(QtWidgets.QLabel("μ :"), self.myu)
+
 
         self.t = QtWidgets.QLineEdit()
-        self.form.addRow(QtWidgets.QLabel("t :"), self.t)
+        form1.addRow(QtWidgets.QLabel("t :"), self.t)
 
         self.dt = QtWidgets.QLineEdit()
-        self.form.addRow(QtWidgets.QLabel("dt :"), self.dt)
+        form1.addRow(QtWidgets.QLabel("dt :"), self.dt)
+
+        self.error = QtWidgets.QLabel("Մուտքագրել համապատասխան տվյալները", objectName='error')
+        self.error.hide()
+        self.mainWidget.layout().addWidget(self.error, 1, 0, 1, 2)
 
         equal = QtWidgets.QPushButton("Հաշվել")
-        self.form.addWidget(equal)
+        self.mainWidget.layout().addWidget(equal, 2, 0, 1, 2)
 
         equal.clicked.connect(self.EqualCtrl)
 
@@ -60,17 +85,29 @@ class Primary(QtWidgets.QToolBox):
     def EqualCtrl(self):
 
         try:
-            lmd = map(lambda lmd: float(lmd.text()), self.lmds)
-            myu = float(self.myu.text())
+            lmd = list(map(lambda lmd: float(lmd.text()), self.lmds))
+            if self.isSame: myu = float(self.myu.text())
+            else: myu = list(map(lambda myu: float(myu.text()), self.myus))
             t = int(self.t.text())
             dt = int(self.dt.text())
             if t<1 or dt<1:
                 raise ValueError
         except:
+            self.error.setText("Մուտքային տվյալները սխալ են")
+            self.error.show()
             return
 
-        print(lmd, myu, t, dt)
-        calc = PrimaryModel(lmd, myu, t, dt)
+        if self.isSame:
+            calc = PrimaryModel(lmd, myu, t, dt)
+        else:
+            calc = PrimaryModel2(lmd, myu, t, dt)
+
+        if calc is None:
+            self.error.setText("Հաշվարկային սխալ (0֊ի բաժանում), \nխնդրում ենք ճշգրտել մուտքային տվյալները․")
+            self.error.show()
+            return
+
+        self.error.hide()
 
         table = TableView(self, len(calc.T), 2, ["t", "Kₕ(t)"], calc.T, calc.availability)
 

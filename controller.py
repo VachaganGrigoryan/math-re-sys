@@ -125,10 +125,10 @@ class MainWindowUi(QtWidgets.QMainWindow):
 
     
     def _buildNRR(self):
-        tabwidget = ui.Primary()
-        self.selectedtab = tabwidget
+        self.selectedtab = QtWidgets.QTabWidget()
+        self.selectedtab.addTab(ui.Primary(), "Հիմնական")
+
         self.generalLayout.addWidget(self.selectedtab)
-        
 
     def _buildBackupRecoverable(self):
         self.selectedtab = QtWidgets.QTabWidget()

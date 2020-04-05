@@ -14,16 +14,19 @@ class Primary2(QtWidgets.QToolBox):
         self.widget(0).layout().addWidget(QtWidgets.QLabel("Մուտքային տվյալներ"), 0, 0)
         inputW = QtWidgets.QWidget()
         self.widget(0).layout().addWidget(inputW, 1, 0)
-        self.form = QtWidgets.QFormLayout(inputW)
+        self.mainLayout = QtWidgets.QHBoxLayout(inputW)
+
+        form = QtWidgets.QFormLayout()
+        self.mainLayout.addChildLayout(form)
 
         self.count = QtWidgets.QLineEdit()
-        self.form.addRow(QtWidgets.QLabel("N :"), self.count)
+        form.addRow(QtWidgets.QLabel("N :"), self.count)
 
         create = QtWidgets.QPushButton("Ստեղծել")
-        self.form.addWidget(create)
+        form.addWidget(create)
 
         create.clicked.connect(self.CreateCtrl)
-        self.form.setAlignment(QtCore.Qt.AlignTop)
+        form.setAlignment(QtCore.Qt.AlignTop)
 
         self.widget(0).layout().addWidget(QtWidgets.QLabel("Համառոտ նկարագրություն"), 0, 1)
         self.widget(0).layout().addWidget(Info(), 1, 1)

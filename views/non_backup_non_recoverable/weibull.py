@@ -29,6 +29,9 @@ class Weibull(QtWidgets.QToolBox):
         self.dt = QtWidgets.QLineEdit()
         form.addRow(QtWidgets.QLabel("dt :"), self.dt)
 
+        self.error = QtWidgets.QLabel("Մուտքագրել համապատասխան տվյալները", objectName='error')
+        form.addWidget(self.error)
+
         equal = QtWidgets.QPushButton("Հաշվել")
         form.addWidget(equal)
 
@@ -48,9 +51,18 @@ class Weibull(QtWidgets.QToolBox):
             if alpha<=0 or beta<=0 or t<1 or dt<1:
                 raise ValueError
         except:
+            self.error.setText("Մուտքային տվյալները սխալ են")
+            self.error.show()
             return
 
         calc = WeibullModel(alpha, beta, t, dt)
+
+        if calc is None:
+            self.error.setText("Հաշվարկային սխալ (0֊ի բաժանում), \nխնդրում ենք ճշգրտել մուտքային տվյալները․")
+            self.error.show()
+            return
+
+        self.error.hide()
 
         table = TableView(self, len(calc.T), 3, ["t", "Pₕ(t)", "fₕ(t)"], calc.T, calc.probability, calc.distribution)
 
