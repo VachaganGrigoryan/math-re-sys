@@ -3,18 +3,21 @@ from models import Weibull as WeibullModel
 from views.tools import Info, Graph, TableView
 
 
-class Weibull(QtWidgets.QToolBox):
+class Weibull(QtWidgets.QWidget):
 
     def __init__(self, parent=None, *args, **kwargs):
         super(Weibull, self).__init__(parent=parent, *args, **kwargs)
+        # scroll = QtWidgets.QScrollArea()
+        # scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        # self.scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        # scroll.setWidgetResizable(True)
+        # scroll.setWidget(self)
 
-        self.addItem(QtWidgets.QWidget(), 'Հաշվարկ')
-        # self.addItem(Info(), 'Նկարագրություն')
-        self.widget(0).setLayout(QtWidgets.QGridLayout())
+        self.setLayout(QtWidgets.QGridLayout())
 
-        self.widget(0).layout().addWidget(QtWidgets.QLabel("Մուտքային տվյալներ"), 0, 0)
+        self.layout().addWidget(QtWidgets.QLabel("Մուտքային տվյալներ"), 0, 0)
         inputW = QtWidgets.QWidget()
-        self.widget(0).layout().addWidget(inputW, 1, 0)
+        self.layout().addWidget(inputW, 1, 0)
         form = QtWidgets.QFormLayout(inputW)
 
         self.alpha = QtWidgets.QLineEdit()
@@ -38,8 +41,8 @@ class Weibull(QtWidgets.QToolBox):
         equal.clicked.connect(self.EqualCtrl)
         form.setAlignment(QtCore.Qt.AlignTop)
 
-        self.widget(0).layout().addWidget(QtWidgets.QLabel("Համառոտ նկարագրություն"), 0, 1)
-        self.widget(0).layout().addWidget(Info('weibull_short.html'), 1, 1)
+        self.layout().addWidget(QtWidgets.QLabel("Համառոտ նկարագրություն"), 0, 1)
+        self.layout().addWidget(Info('weibull_short.html'), 1, 1)
 
     def EqualCtrl(self):
 
@@ -64,7 +67,7 @@ class Weibull(QtWidgets.QToolBox):
 
         self.error.hide()
 
-        table = TableView(self, len(calc.T), 3, ["t", "Pₕ(t)", "fₕ(t)"], calc.T, calc.probability, calc.distribution)
+        table = TableView(self, len(calc.T), 4, ["t", "Pₕ(t)", "fₕ(t)", "λₕ(t)"], calc.T, calc.probability, calc.distribution, calc.failure_rate)
 
         graphProb = Graph(self)
         graphProb.plot(calc.T, calc.probability, "Անխափան աշխատանքի  հավանականություն", "t", "$P_c(t)$")
@@ -76,8 +79,8 @@ class Weibull(QtWidgets.QToolBox):
         graphRate = Graph(self)
         graphRate.plot(calc.T, calc.failure_rate, "Համակարգի խափանման ինտեսիվություն", "t", "$\lambda_c(t)$")
 
-        self.widget(0).layout().addWidget(QtWidgets.QLabel("Ելքային տվյալներ"), 2, 0, 1, 2)
-        self.widget(0).layout().addWidget(table, 3, 0, 2, 1)
-        self.widget(0).layout().addWidget(graphProb, 3, 1)
-        self.widget(0).layout().addWidget(graphDist, 4, 1)
-        self.widget(0).layout().addWidget(graphRate, 5, 1)
+        self.layout().addWidget(QtWidgets.QLabel("Ելքային տվյալներ"), 2, 0, 1, 2)
+        self.layout().addWidget(table, 3, 0, 2, 1)
+        self.layout().addWidget(graphProb, 3, 1)
+        self.layout().addWidget(graphDist, 4, 1)
+        self.layout().addWidget(graphRate, 5, 1)

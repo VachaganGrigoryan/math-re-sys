@@ -128,6 +128,7 @@ class Consecutive(System):
         self._Tc = 1 / self._lmdFR
         System.__init__(self, t, dt)
 
+    @property
     def AverageUptime(self):
         return self._Tc
 

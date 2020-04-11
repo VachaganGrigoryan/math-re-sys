@@ -21,38 +21,38 @@ class MainWindowUi(QtWidgets.QMainWindow):
 
 
     def setupUi(self):
-        self.scroll = QtWidgets.QScrollArea()
+        # self.scroll = QtWidgets.QScrollArea()
         # self.scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         # self.scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.scroll.setWidgetResizable(True)
+        # self.scroll.setWidgetResizable(True)
 
-        self.centralwidget = QtWidgets.QWidget(self)
-        self.centralwidget.setObjectName("centralwidget")
+        self.MainWidget = QtWidgets.QWidget(self)
+        self.MainWidget.setObjectName("centralwidget")
 
-        self.generalLayout = QtWidgets.QVBoxLayout()
-        self.generalLayout.setContentsMargins(20, 20, 20, 20)
-        self.generalLayout.setObjectName("generalLayout")
+        self.MainLayout = QtWidgets.QVBoxLayout()
+        self.MainLayout.setContentsMargins(20, 20, 20, 20)
+        self.MainLayout.setObjectName("generalLayout")
 
-        self.generalLayout.setAlignment(QtCore.Qt.AlignTop)
-        self.centralwidget.setLayout(self.generalLayout)
+        self.MainLayout.setAlignment(QtCore.Qt.AlignTop)
+        self.MainWidget.setLayout(self.MainLayout)
 
 
         self.MainTitle = QtWidgets.QLabel()
         self.MainTitle.setObjectName("MainTitle")
         self.MainTitle.setAlignment(QtCore.Qt.AlignCenter)
-        self.generalLayout.addWidget(self.MainTitle)
+        self.MainLayout.addWidget(self.MainTitle)
 
-        self.selectedtab = QtWidgets.QWidget(self)
 
-        self.SystemType = QtWidgets.QComboBox(self.centralwidget)
+        self.SystemType = QtWidgets.QComboBox(self.MainWidget)
         self.SystemType.setObjectName("SystemType")
         self.SystemType.addItems(["", "", "", "", ""])
-        self.generalLayout.addWidget(self.SystemType)
-
+        self.MainLayout.addWidget(self.SystemType)
         self.SystemType.currentIndexChanged.connect(self._switchSystemView)
 
-        self.scroll.setWidget(self.centralwidget)
-        self.setCentralWidget(self.scroll)
+        self.MethodView = QtWidgets.QToolBox(self)
+        self.MainLayout.addWidget(self.MethodView)
+
+        self.setCentralWidget(self.MainWidget)
 
         self.menubar = QtWidgets.QMenuBar(self)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 715, 40))
@@ -69,6 +69,7 @@ class MainWindowUi(QtWidgets.QMainWindow):
         self.setStatusBar(self.statusbar)
         self.ctrl_n = QtWidgets.QAction(self)
         self.ctrl_n.setObjectName("ctrl_n")
+        self.ctrl_n.triggered.connect(self._switchSystemView)
         self.ctrl_s = QtWidgets.QAction(self)
         self.ctrl_s.setObjectName("ctrl_s")
         self.ctrl_g = QtWidgets.QAction(self)
@@ -103,52 +104,54 @@ class MainWindowUi(QtWidgets.QMainWindow):
     
     def _buildNonBackupNonRecoverable(self):
         log.info("Function _build_buildNonBackupNonRecoverable()")
-        # tried = QtWidgets.QToolBox()
+        view = QtWidgets.QTabWidget()
+        view.addTab(ui.Consecutive(), "Ընդհանուր դեպք")
+        view.addTab(ui.Exponential(), "Ցուցչային")
+        view.addTab(ui.Rayle(), "Ռեյլ")
+        view.addTab(ui.Weibull(), "Վեյբուլ")
+        view.addTab(ui.Gamma(), "Գամմա")
+        view.addTab(ui.Normal(), "Նորմալ")
 
-        self.selectedtab = QtWidgets.QTabWidget()
-        self.selectedtab.addTab(ui.Consecutive(), "Հաջորդական")
-        self.selectedtab.addTab(ui.Exponential(), "Ցուցչային")
-        self.selectedtab.addTab(ui.Rayle(), "Ռեյլ")
-        self.selectedtab.addTab(ui.Weibull(), "Վեյբուլ")
-        self.selectedtab.addTab(ui.Gamma(), "Գամմա")
-        self.selectedtab.addTab(ui.Normal(), "Նորմալ")
+        self.MethodView.addItem(view, 'Հաշվարկ')
+        self.MethodView.addItem(Info('non_recoverable_non_backup.html'), 'Մեթոդի նկարագրություն')
 
-        # tried.addItem(self.selectedtab, 'Հաշվարկ')
-        # tried.addItem(Info(), 'Նկարագրություն')
-
-        self.generalLayout.addWidget(self.selectedtab)
 
     def _buildRNR(self):
-        tabwidget = ui.RNR()
-        self.selectedtab = tabwidget
-        self.generalLayout.addWidget(self.selectedtab)
+        view = ui.RNR(self)
+        self.MethodView.addItem(view, 'Հաշվարկ')
+        self.MethodView.addItem(Info(), 'Մեթոդի նկարագրություն')
 
     
-    def _buildNRR(self):
-        self.selectedtab = QtWidgets.QTabWidget()
-        self.selectedtab.addTab(ui.Primary(), "Հիմնական")
+    def _buildNonBackupRecoverable(self):
+        view = QtWidgets.QTabWidget(self)
+        view.addTab(ui.Primary(), "Հիմնական")
 
-        self.generalLayout.addWidget(self.selectedtab)
+        self.MethodView.addItem(view, 'Հաշվարկ')
+        self.MethodView.addItem(Info(), 'Մեթոդի նկարագրություն')
 
     def _buildBackupRecoverable(self):
-        self.selectedtab = QtWidgets.QTabWidget()
-        self.selectedtab.addTab(ui.BackupByPermanently(), "Մշտական")
-        self.selectedtab.addTab(ui.BackupByReplacement(), "Փոխարինումով")
-        self.selectedtab.addTab(ui.BackupMixed(), "Խառը")
+        view = QtWidgets.QTabWidget(self)
+        view.addTab(ui.BackupByPermanently(), "Մշտական")
+        view.addTab(ui.BackupByReplacement(), "Փոխարինումով")
+        view.addTab(ui.BackupMixed(), "Խառը")
 
-        self.generalLayout.addWidget(self.selectedtab)
+        self.MethodView.addItem(view, 'Հաշվարկ')
+        self.MethodView.addItem(Info(), 'Մեթոդի նկարագրություն')
     
     def _switchSystemView(self):
-        # self.generalLayout.removeWidget(self.selectedtab)
-        self.selectedtab.hide()
+        self.MainLayout.removeWidget(self.MethodView)
+        self.MethodView = QtWidgets.QToolBox(self)
+        self.MainLayout.addWidget(self.MethodView)
+
         switch = {
             0: lambda: '',
             1: self._buildNonBackupNonRecoverable,
             2: self._buildRNR,
-            3: self._buildNRR,
+            3: self._buildNonBackupRecoverable,
             4: self._buildBackupRecoverable
         }
         return switch.get(self.SystemType.currentIndex())()
+
 
     def about(self):
         message = QtWidgets.QMessageBox()
@@ -174,10 +177,10 @@ class MainWindowUi(QtWidgets.QMainWindow):
         self.MainTitle.setText(_translate("MainTitle", "ԱՎՏՈՄԱՏԱՑՎԱԾ ՀԱՄԱԿԱՐԳԵՐԻ ՀՈՒՍԱԼԻՈՒԹՅԱՆ\n ՀԱՇՎԱՐԿԻ ՃԱՐՏԱՐԱԳԻՏԱԿԱՆ ՄԵԹՈԴՆԵՐ"))
 
         self.SystemType.setItemText(0, _translate("MainWindow", "Ընտրել մեթոդը"))
-        self.SystemType.setItemText(1, _translate("MainWindow", "Չպահուստավորված չվերականգնվող"))
-        self.SystemType.setItemText(2, _translate("MainWindow", "Պահուստավորված չվերականգնվող"))
-        self.SystemType.setItemText(3, _translate("MainWindow", "Չպահուստավորված վերականգնվող"))
-        self.SystemType.setItemText(4, _translate("MainWindow", "Պահուստավորված վերականգնվող"))
+        self.SystemType.setItemText(1, _translate("MainWindow", "Չպահուստավորված չվերականգնվող համակարգ"))
+        self.SystemType.setItemText(2, _translate("MainWindow", "Պահուստավորված չվերականգնվող համակարգ"))
+        self.SystemType.setItemText(3, _translate("MainWindow", "Չպահուստավորված վերականգնվող համակարգ"))
+        self.SystemType.setItemText(4, _translate("MainWindow", "Պահուստավորված վերականգնվող համակարգ"))
 
         self.menu_1.setTitle(_translate("MainWindow", "Ֆայլ"))
         self.menu_2.setTitle(_translate("MainWindow", "Խմբագրել"))

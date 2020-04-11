@@ -2,18 +2,18 @@ from PyQt5 import QtWidgets, QtCore
 from models import Primary as PrimaryModel, Primary2 as PrimaryModel2
 from views.tools import Info, Graph, TableView
 
-class Primary(QtWidgets.QToolBox):
+class Primary(QtWidgets.QWidget):
 
     def __init__(self, parent=None, *args, **kwargs):
         super(Primary, self).__init__(parent=parent, *args, **kwargs)
 
-        self.addItem(QtWidgets.QWidget(), 'Հաշվարկ')
+        # self.addItem(QtWidgets.QWidget(), 'Հաշվարկ')
         # self.addItem(Info(), 'Նկարագրություն')
-        self.widget(0).setLayout(QtWidgets.QGridLayout())
+        self.setLayout(QtWidgets.QGridLayout())
 
-        self.widget(0).layout().addWidget(QtWidgets.QLabel("Մուտքային տվյալներ"), 0, 0)
+        self.layout().addWidget(QtWidgets.QLabel("Մուտքային տվյալներ"), 0, 0)
         self.mainWidget = QtWidgets.QWidget()
-        self.widget(0).layout().addWidget(self.mainWidget, 1, 0)
+        self.layout().addWidget(self.mainWidget, 1, 0)
         self.mainWidget.setLayout(QtWidgets.QGridLayout())
 
         inputW = QtWidgets.QWidget()
@@ -32,8 +32,8 @@ class Primary(QtWidgets.QToolBox):
         form.setAlignment(QtCore.Qt.AlignTop)
         self.mainWidget.layout().setAlignment(QtCore.Qt.AlignTop)
 
-        self.widget(0).layout().addWidget(QtWidgets.QLabel("Համառոտ նկարագրություն"), 0, 1)
-        self.widget(0).layout().addWidget(Info(), 1, 1)
+        self.layout().addWidget(QtWidgets.QLabel("Համառոտ նկարագրություն"), 0, 1)
+        self.layout().addWidget(Info(), 1, 1)
 
     def CreateCtrl(self):
 
@@ -114,9 +114,9 @@ class Primary(QtWidgets.QToolBox):
         graphAvailable = Graph(self)
         graphAvailable.plot(calc.T, calc.availability, "Անխափան աշխատանքի  հավանականություն", "t", "$K_g(t)$")
 
-        self.widget(0).layout().addWidget(QtWidgets.QLabel("Ելքային տվյալներ"), 2, 0, 1, 2)
-        self.widget(0).layout().addWidget(table, 3, 0, 2, 1)
-        self.widget(0).layout().addWidget(graphAvailable, 3, 1)
+        self.layout().addWidget(QtWidgets.QLabel("Ելքային տվյալներ"), 2, 0, 1, 2)
+        self.layout().addWidget(table, 3, 0, 2, 1)
+        self.layout().addWidget(graphAvailable, 3, 1)
 
 
 def deleteItemsOfLayout(layout):

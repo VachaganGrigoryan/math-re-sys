@@ -140,15 +140,15 @@ class TextView(QTextEdit):
 
 class Info(TextView):
 
-    def __init__(self, name='test.html', path='./documents', parent=None, **kwargs):
+    def __init__(self, name='test.html', content=None, path='./documents', parent=None, **kwargs):
         super(Info, self).__init__(parent, **kwargs)
 
-        file = QFile(f'{path}/{name}')
-        file.open(QFile.ReadOnly | QFile.Text)
-        stream = QTextStream(file)
-        content = stream.readAll()
-        file.close()
-
+        if content is None:
+            file = QFile(f'{path}/{name}')
+            file.open(QFile.ReadOnly | QFile.Text)
+            stream = QTextStream(file)
+            content = stream.readAll()
+            file.close()
 
         self.renderFormula(content)
 
