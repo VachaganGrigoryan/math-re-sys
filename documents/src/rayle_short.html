@@ -1,41 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-    body {
-        background-color: powderblue;
-        text-align: center;
-    }
-    h1 {color: green;}
-    h3 {
-        color: green;
-        text-align: center;
-    }
-    p {
-        color: black;
-        text-align: left;
-    }
-    div {
-        text-align: center;
-    }
-
-</style>
+    <style>
+        body {
+            background-color: powderblue;
+            text-align: center;
+        }
+        h1 {color: green;}
+        h3 {
+            color: green;
+            text-align: center;
+        }
+        p {
+            color: black;
+            text-align: left;
+        }
+        div {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<h3>Նորմալ օրենք</h3>
+<h3>Ռեյլի օրենք</h3>
+
 <p>
     Անխափան աշխատանքի հավանականություն ՝
     <br>
 </p>
-    {%30 :; P_n(t)= \frac{c}{\sigma_0 \sqrt{2 \pi}} \int_t^\infty e^{- \frac{(x-m_0)^2}{2 \sigma_0^2}} \, dx %}
+    <div>{%30 :; P_r(t)=e^{-\lambda t^2} %}</div>
 <p>
     <br>
     Անխափան աշխատանքի ժամանակահատվածում հավանականություն բաշխման խտությունը ՝
     <br>
 </p>
-    {%30 :; f_n(t)=\frac{c}{\sigma_0 \sqrt{2 \pi}} e^{- \frac{(t-m_0)^2}{2 \sigma_0^2}} %}
+    <div>{%30 :; f_r(t)=2 \lambda t e^{-\lambda t^2} %}</div>
 <p>
-     <br>
+    <br>
     որտեղ՝
     <br>
     {%16 :; P_h(t) %}-ն <i>t</i> ժամանակում համակարգի անխափան աշխատանքի հավանականությունն է,
@@ -46,7 +46,5 @@
     <br>
     {%16 :; f_h(t)%}-ն մինչև խափանումը ընկած ժամանակահատվածի խտության բաշխումն է։
 </p>
-
-
 </body>
 </html>

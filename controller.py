@@ -116,8 +116,11 @@ class MainWindowUi(QtWidgets.QMainWindow):
         self.MethodView.addItem(Info('non_recoverable_non_backup.html'), 'Մեթոդի նկարագրություն')
 
 
-    def _buildRNR(self):
-        view = ui.RNR(self)
+    def _buildBackupNonRecoverable(self):
+        view = QtWidgets.QTabWidget()
+        view.addTab(ui.BNRMixed(), "Ընդհանուր դեպք")
+        # view.addTab(ui.RNR(), "Ցուցչային")
+
         self.MethodView.addItem(view, 'Հաշվարկ')
         self.MethodView.addItem(Info(), 'Մեթոդի նկարագրություն')
 
@@ -146,7 +149,7 @@ class MainWindowUi(QtWidgets.QMainWindow):
         switch = {
             0: lambda: '',
             1: self._buildNonBackupNonRecoverable,
-            2: self._buildRNR,
+            2: self._buildBackupNonRecoverable,
             3: self._buildNonBackupRecoverable,
             4: self._buildBackupRecoverable
         }

@@ -1,4 +1,6 @@
 import sys
+import os
+import uuid
 
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import QFile, QTextStream, QMimeData, QByteArray, QBuffer, QIODevice, Qt
@@ -84,21 +86,18 @@ class TextView(QTextEdit):
         self._buffer = StringIO()
         self.setReadOnly(True)
 
-        # Setup the QTextEdit editor configuration
         self.setAutoFormatting(QTextEdit.AutoAll)
-        # Initialize default font size.
         font = QFont('Times', 12)
         self.setFont(font)
-        # We need to repeat the size to init the current format.
         self.setFontPointSize(12)
 
-        self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.customContextMenuRequested.connect(self.context_menu)
+        # self.setContextMenuPolicy(Qt.CustomContextMenu)
+        # self.customContextMenuRequested.connect(self.context_menu)
 
     def keyPressEvent(self, event):
         super(TextView, self).keyPressEvent(event)
         if event.modifiers() == Qt.ControlModifier and event.key() == Qt.Key_C:
-            self.copyData()
+            self.copy()
 
     def context_menu(self):
         contextMenu = QMenu(self)
@@ -126,47 +125,59 @@ class TextView(QTextEdit):
         # self.moveNewLine()
         self.moveCursor(QTextCursor.Start)
 
-    def copyData(self):
-        # print("Copy")
-        QApplication.clipboard().setImage()
-
     def __getattr__(self, attr):
         return getattr(self._buffer, attr)
 
-    def moveNewLine(self):
-        fragment = QtGui.QTextDocumentFragment.fromHtml("<br>")
-        self.textCursor().insertFragment(fragment)
-        self.moveCursor(QTextCursor.Start)
 
 class Info(TextView):
 
-    def __init__(self, name='test.html', content=None, path='./documents', parent=None, **kwargs):
+    def __init__(self, file_name='test.html', url='./documents', parent=None, **kwargs):
         super(Info, self).__init__(parent, **kwargs)
 
-        if content is None:
-            file = QFile(f'{path}/{name}')
-            file.open(QFile.ReadOnly | QFile.Text)
-            stream = QTextStream(file)
-            content = stream.readAll()
-            file.close()
+        build_dir = os.path.join(url, 'builds')
+        self.file_name = file_name
+        self.build_url = os.path.join(build_dir, file_name)
+        self.src_url = os.path.join(url, 'src', file_name)
+        self.img_dir = os.path.join(build_dir, 'img')
+        self.ensure_dir(build_dir)
+        self.ensure_dir(self.img_dir)
 
-        self.renderFormula(content)
+        if not os.path.exists(self.build_url) and os.path.exists(self.src_url):
+            self.build(self.reader(self.src_url))
 
-    def renderFormula(self, content):
-        def _render(text):
-            start = text.find('{%')
-            if start != -1:
-                self.write(text[:start])
-                end = text.find('%}')
-                # print(text[:start], text[start+2:end])
-                size, formula = text[start+2:end].split(':;')
-                formula = MathFormulaSVG(formula=formula, size=size)
-                self.insert(formula.image)
-                _render(text[end+2:])
-            else:
-                self.write(text)
-        _render(content)
+        self.write(self.reader(self.build_url))
 
+    def build(self, content):
+        with open(self.build_url, 'a') as writer:
+            def _render(text):
+                start = text.find('{%')
+                if start != -1:
+                    writer.write(text[:start])
+                    end = text.find('%}')
+                    size, formula = text[start+2:end].split(':;')
+                    formula = MathFormulaSVG(formula=formula, size=size)
+                    img_name = str(uuid.uuid4())
+                    img_url = os.path.join(self.img_dir, f'{img_name}.png')
+                    formula.savePNG(img_url)
+                    writer.write(f'<img src="{img_url}" alt="{img_name}">')
+                    _render(text[end+2:])
+                else:
+                    writer.write(text)
+            _render(content)
+
+    @staticmethod
+    def reader(file_path):
+        file = QFile(file_path)
+        file.open(QFile.ReadOnly | QFile.Text)
+        stream = QTextStream(file)
+        content = stream.readAll()
+        file.close()
+        return content
+
+    @staticmethod
+    def ensure_dir(directory):
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
 if __name__ == '__main__':
 
@@ -175,7 +186,7 @@ if __name__ == '__main__':
     widgets = QtWidgets.QWidget()
     widgets.setLayout(QVBoxLayout())
     widgets.resize(500, 500)
-    widgets.layout().addWidget(Info())
+    widgets.layout().addWidget(Info('gamma_short.html'))
     widgets.show()
 
     sys.exit(app.exec_())

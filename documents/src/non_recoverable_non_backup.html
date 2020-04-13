@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-    body {
-        background-color: powderblue;
-        text-align: center;
-    }
-    h1 {color: green;}
-    h3 {
-        color: green;
-        text-align: center;
-    }
-    p {
-        color: black;
-        text-align: left;
-    }
-    div {
-        text-align: center;
-    }
-
-</style>
+    <style>
+        body {
+            background-color: powderblue;
+            text-align: center;
+        }
+        h1 {color: green;}
+        h3 {
+            color: green;
+            text-align: center;
+        }
+        p {
+            color: black;
+            text-align: left;
+        }
+        div {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
@@ -33,7 +32,7 @@
     որպես տարրերի անխափան աշխատանքի հավանականությունների արտադրյալ՝
     <br>
 </p>
-    {%22 :; P_h(t)=\prod_{i=1}^N P_i(t) %}
+    <div>{%22 :; P_h(t)=\prod_{i=1}^N P_i(t) %}</div>
 
 <p>
     <br>
@@ -41,20 +40,20 @@
     օրենքով բաշխման դեպքում՝
     <br>
 </p>
-    {%22 :; F_i(t)=1-e^{-\lambda_i t} %}, այսինքն՝  {%22 :; P_i(t)=1-F_i(t)=e^{-\lambda_i t} %}
+    <div>{%22 :; F_i(t)=1-e^{-\lambda_i t} %}, այսինքն՝  {%22 :; P_i(t)=1-F_i(t)=e^{-\lambda_i t} %}</div>
 <p>
     <br>
     որտեղ՝ {%16 :; \lambda_i %}-ն <i>i</i>-րդ տարրի խափանումների ուժգնությունն է: Այդ դեպքում համակարգի անխափան աշխատանքի
     հավանականությունը և հուսալիության մյուս ցուցանիշները որոշվում են հետևյալ բանաձևերով.
     <br>
 </p>
-    {%22 :; P_h(t)=\prod_{i=1}^{n} e^{-\lambda_i t} = e^{-\sum_{i=1}^{n} \lambda_i} = e^{-\lambda_հ t} %}
+    <div>{%22 :; P_h(t)=\prod_{i=1}^{n} e^{-\lambda_i t} = e^{-\sum_{i=1}^{n} \lambda_i} = e^{-\lambda_հ t} %}</div>
     <br>
-    {%22 :; \lambda_h=\sum_{i=1}^{N} \lambda_i %}
+    <div>{%22 :; \lambda_h=\sum_{i=1}^{N} \lambda_i %}</div>
     <br>
-    {%22 :; T_h=\frac{1}{\lambda_h}=\frac{1}{\sum_{i=1}^N \lambda_i} %}
+    <div>{%22 :; T_h=\frac{1}{\lambda_h}=\frac{1}{\sum_{i=1}^N \lambda_i} %}</div>
     <br>
-    {%22 :; f_h(t)= \lambda_h e^{-\lambda_h t}=\sum_{i=1}^N \lambda_i e^{-t\sum_{i=1}^N \lambda_i} %}
+    <div>{%22 :; f_h(t)= \lambda_h e^{-\lambda_h t}=\sum_{i=1}^N \lambda_i e^{-t\sum_{i=1}^N \lambda_i} %}</div>
 <p>
     <br>
     Գործնականում բարձր հուսալի տարրերից կազմված համակարգերի հուսալիության հաշվարկի համար կարելի է
@@ -62,9 +61,9 @@
     պայմանի կատարման դեպքում, ստացվում են {%16 :; e^{-\lambda_h t} %}-ն վերածելով շարքի և սահմանափակվելով առաջին երկու անդամներով.
 </p>
     <br>
-    {%22 :; P_h(t)\approx 1-\lambda_h t%}
+    <div>{%22 :; P_h(t)\approx 1-\lambda_h t%}</div>
     <br>
-    {%22 :; f(t)\approx \lambda_h(1-\lambda_h t) %}
+    <div>{%22 :; f(t)\approx \lambda_h(1-\lambda_h t) %}</div>
 <p>
     <br>
     Ընդ որում {%16 :; \lambda_h t=0.2%} դեպքում թույլ տրված սխալը չի գերազանցում 3,5%-ը:

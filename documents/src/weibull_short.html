@@ -1,40 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-    body {
-        background-color: powderblue;
-        text-align: center;
-    }
-    h1 {color: green;}
-    h3 {
-        color: green;
-        text-align: center;
-    }
-    p {
-        color: black;
-        text-align: left;
-    }
-    div {
-        text-align: center;
-    }
-
-</style>
+    <style>
+        body {
+            background-color: powderblue;
+            text-align: center;
+        }
+        h1 {color: green;}
+        h3 {
+            color: green;
+            text-align: center;
+        }
+        p {
+            color: black;
+            text-align: left;
+        }
+        div {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<h3>Ռեյլի օրենք</h3>
-
+<h3>Վեյբուլի օրենք</h3>
 <p>
     Անխափան աշխատանքի հավանականություն ՝
     <br>
 </p>
-    {%30 :; P_r(t)=e^{-\lambda t^2} %}
+    <div>{%30 :; P_w(t)=e^{-(\frac{t}{\beta})^\alpha} %}</div>
 <p>
     <br>
     Անխափան աշխատանքի ժամանակահատվածում հավանականություն բաշխման խտությունը ՝
     <br>
 </p>
-    {%30 :; f_r(t)=2 \lambda t e^{-\lambda t^2} %}
+    <div>{%30 :; f_w(t)=\frac{\alpha t^{\alpha-1}}{\beta^\alpha}e^{-(\frac{t}{\beta})^\alpha} %}</div>
 <p>
     <br>
     որտեղ՝
@@ -45,7 +43,8 @@
     <br>
     {%16 :; \lambda_h(t)%}-ն <i>t</i> պահին համակարգի խափանման ինտեսիվությունն է,
     <br>
-    {%16 :; f_h(t)%}-ն մինչև խափանումը ընկած ժամանակահատվածի խտության բաշխումն է։
+    {%16 :; f_h(t)%}-ն մինչև խափանումը ընկած ժամանակահատվածի խտության բաշխումն է;
 </p>
+
 </body>
 </html>
