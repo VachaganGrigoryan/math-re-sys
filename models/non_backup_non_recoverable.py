@@ -1,14 +1,13 @@
 import numpy
 import math
 from functools import reduce
-from .integral import Integral
+from const.integral import Integral
 
 import logging as log
 
 from .math_errors import MathErrors
 
-log.basicConfig(filename='text.log', filemode='w', format='%(levelname)s::%(message)s::%(asctime)s', level=log.DEBUG)
-log.info("This is a non_backup_non_recoverable.py file")
+
 numpy.seterr(divide='ignore', invalid='ignore')
 
 

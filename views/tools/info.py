@@ -131,7 +131,7 @@ class TextView(QTextEdit):
 
 class Info(TextView):
 
-    def __init__(self, file_name='test.html', url='./documents', parent=None, **kwargs):
+    def __init__(self, file_name='test.html', url='./static/documents', parent=None, **kwargs):
         super(Info, self).__init__(parent, **kwargs)
 
         build_dir = os.path.join(url, 'builds')
