@@ -154,7 +154,7 @@ class Info(TextView):
         self.write(self.reader(self.build_url))
 
     def build(self, content):
-        with open(self.build_url, 'a') as writer:
+        with open(self.build_url, 'a',  encoding='utf-8') as writer:
             def _render(text):
                 start = text.find('{%')
                 if start != -1:
