@@ -59,7 +59,7 @@ class BNRMixed(QWidget):
 
 
 
-        self.layout().addWidget(Info(), 3, 1)
+        self.layout().addWidget(Info("non_recoverable_backup.html"), 3, 1)
 
 
     @pyqtSlot()

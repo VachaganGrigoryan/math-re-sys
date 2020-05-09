@@ -131,8 +131,11 @@ class TextView(QTextEdit):
 
 class Info(TextView):
 
-    def __init__(self, file_name='test.html', url='./static/documents', parent=None, **kwargs):
+    def __init__(self, file_name='test.html', url='./static/documents', parent=None, content=None, **kwargs):
         super(Info, self).__init__(parent, **kwargs)
+
+        if content:
+            file_name = f'{str(uuid.uuid4())}.html'
 
         build_dir = os.path.join(url, 'builds')
         self.file_name = file_name
@@ -142,7 +145,10 @@ class Info(TextView):
         self.ensure_dir(build_dir)
         self.ensure_dir(self.img_dir)
 
-        if not os.path.exists(self.build_url) and os.path.exists(self.src_url):
+
+        if content:
+            self.build(content)
+        elif not os.path.exists(self.build_url) and os.path.exists(self.src_url):
             self.build(self.reader(self.src_url))
 
         self.write(self.reader(self.build_url))
