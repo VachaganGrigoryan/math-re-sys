@@ -91,7 +91,7 @@ class Consecutive(QtWidgets.QWidget):
 
         self.layout().addWidget(QtWidgets.QLabel("Ելքային տվյալներ"), 2, 0, 1, 2)
         self.layout().addWidget(table, 3, 0)
-        self.layout().addWidget(Info(content=content), 402, 0)
+        self.layout().addWidget(Info(content=content), 4, 0)
         self.layout().addWidget(graphProb, 3, 1)
         self.layout().addWidget(graphDist, 4, 1)
         # self.layout().addWidget(graphRate, 5, 1)
