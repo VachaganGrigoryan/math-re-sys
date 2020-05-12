@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import sys
 import os
 import uuid
@@ -111,6 +113,7 @@ class TextView(QTextEdit):
 
     def write(self, text):
         self.moveCursor(QTextCursor.End)
+        print(text)
         # self.insertPlainText(text)
         self.insertHtml(text)
         self._buffer.write(text)
@@ -154,6 +157,7 @@ class Info(TextView):
         self.write(self.reader(self.build_url))
 
     def build(self, content):
+        print(content)
         with open(self.build_url, 'a',  encoding='utf-8') as writer:
             def _render(text):
                 start = text.find('{%')
