@@ -46,7 +46,7 @@ class BackupMixed(QtWidgets.QWidget):
         rows = system.MainLayout.rowCount()
         cols = system.MainLayout.columnCount()
         print(rows, cols)
-        if rows is 1: return
+        if rows == 1: return
 
         ls = []
         for row in range(1, rows):

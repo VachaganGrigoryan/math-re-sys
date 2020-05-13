@@ -180,6 +180,7 @@ class Info(TextView):
         file = QFile(file_path)
         file.open(QFile.ReadOnly | QFile.Text)
         stream = QTextStream(file)
+        stream.setCodec("UTF-8")
         content = stream.readAll()
         file.close()
         return content
