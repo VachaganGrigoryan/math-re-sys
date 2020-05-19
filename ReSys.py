@@ -1,5 +1,4 @@
 import os
-
 import pkg_resources
 # pyinstaller --onefile --windowed ReSys.py
 # pyinstaller --onedir -w --icon "D:/Projects/pyqt-math-irina/static/icon.ico" --add-data "D:/Projects/pyqt-math-irina/static;static/" ReSys.py
