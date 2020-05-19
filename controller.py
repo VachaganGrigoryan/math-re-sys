@@ -139,7 +139,7 @@ class MainWindowUi(QtWidgets.QMainWindow):
         view.addTab(ui.BackupMixed(), TEXT.MIXED)
 
         self.MethodView.addItem(view, TEXT.TAB_CALC)
-        self.MethodView.addItem(Info(), TEXT.TAB_DESC)
+        self.MethodView.addItem(Info("recoverable.html"), TEXT.TAB_DESC)
     
     def _switchSystemView(self):
         self.MainLayout.removeWidget(self.MethodView)

@@ -45,10 +45,8 @@ class BackupByReplacement(QtWidgets.QWidget):
         except:
             return
 
-        print(m, r, lmd, myu)
 
         self.asr = backup_recoverable.ReservedByReplacement(m, r, lmd, myu)
-        print(self.asr.ReadinessFunction)
         graphLayout = QtWidgets.QVBoxLayout(self)
         graphLayout.setObjectName("graph")
         self.graphProb = Graph(self)
@@ -62,7 +60,6 @@ class BackupByReplacement(QtWidgets.QWidget):
         graphLayout.addWidget(self.graphDist)
 
         # self.createTable()
-        # print(self.asr.Tv)
         self.tableWidget = TableView(self, m + 1, 4, ["r", "Kг", "T", "Tв"], self.asr.rs, self.asr.ReadinessFunction, self.asr.T, self.asr.Tv)
 
         tableLayout = QtWidgets.QHBoxLayout()

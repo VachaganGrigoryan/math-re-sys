@@ -33,7 +33,7 @@ class Primary(QtWidgets.QWidget):
         self.mainWidget.layout().setAlignment(QtCore.Qt.AlignTop)
 
         self.layout().addWidget(QtWidgets.QLabel("Համառոտ նկարագրություն"), 0, 1)
-        self.layout().addWidget(Info(), 1, 1)
+        self.layout().addWidget(Info("primary_short.html"), 1, 1)
 
     def CreateCtrl(self):
 

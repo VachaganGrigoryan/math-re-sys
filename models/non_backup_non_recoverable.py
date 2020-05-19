@@ -3,8 +3,6 @@ import math
 from functools import reduce
 from const.integral import Integral
 
-import logging as log
-
 from .math_errors import MathErrors
 
 

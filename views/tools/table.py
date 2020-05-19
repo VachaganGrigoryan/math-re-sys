@@ -54,7 +54,6 @@ class TableView(QTableWidget):
             rows.add(index.row())
             cols.add(index.column())
 
-        print(rows, cols)
         if len(rows) == 1:
             QApplication.clipboard().setText("\t".join(
                 [index.data() for index in self.selectedIndexes()]))
@@ -67,21 +66,17 @@ class TableView(QTableWidget):
             return
         mirow, marow = min(rows), max(rows)
         micol, macol = min(cols), max(cols)
-        print(mirow, marow, micol, macol)
         arrays = [
             [
                 "" for _ in range(macol - micol + 1)
             ] for _ in range(marow - mirow + 1)
         ]
-        print(arrays)
 
         for index in self.selectedIndexes():
             arrays[index.row() - mirow][index.column() - micol] = index.data()
-        print(arrays)
         data = '\r\n'.join('\t'.join(row) for row in arrays)
         # for row in arrays:
         #     data += "\t".join(row) + "\r\n"
-        print(data)
         QApplication.clipboard().setText(data)
         QMessageBox.information(self, "Հուշում", "Պատճենվել է")
 

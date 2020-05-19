@@ -34,13 +34,11 @@ class RNR(QtWidgets.QWidget):
 
         self.graphProb = Graph(self)
         self.graphProb.setObjectName("graphProb")
-        print(self.asr.probability)
         self.graphProb.plot(self.asr.T, self.asr.probability, "Անխափան աշխատանքի  հավանականություն", "t", "$P_c(t)$")
         graphLayout.addWidget(self.graphProb)
 
         self.graphDist = Graph(self)
         self.graphDist.setObjectName("graphDist")
-        print(self.asr.distribution)
         self.graphDist.plot(self.asr.T, self.asr.distribution, "Մինչև  համակարգի  խափանումը ընկած\n ժամանակահատվածի բաշխման խտություն", "t", "$f_c(t)$ ")
         graphLayout.addWidget(self.graphDist)
 

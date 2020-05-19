@@ -37,27 +37,24 @@ class BackupMixed(QtWidgets.QWidget):
 
         values = BackupMixed.getValues(self.System)
 
-        print(values)
 
     @staticmethod
     def getValues(system):
         # system = self.System
-        print(system)
         rows = system.MainLayout.rowCount()
         cols = system.MainLayout.columnCount()
-        print(rows, cols)
+
         if rows == 1: return
 
         ls = []
         for row in range(1, rows):
             for col in range(0, cols):
                 elm = system.MainLayout.itemAtPosition(row, col)
-                print(elm)
+
                 if elm:
                     widget = elm.widget()
-                    print(widget)
+
                     if widget.sysType.currentIndex():
-                        print(widget.System)
                         ls.append(BackupMixed.getValues(widget.System))
                     else:
                         ls.append((float(widget.grid.itemAtPosition(0, 1).widget().text() or 0), float(widget.grid.itemAtPosition(1, 1).widget().text() or 0)))
@@ -106,7 +103,7 @@ class System(QtWidgets.QWidget):
         self.MainLayout.addWidget(self.type2, 0, 1)
 
         n = math.ceil(math.sqrt(k))
-        print(n)
+
         for i in range(1, n+1):
             for j in range(n):
                 self.MainLayout.addWidget(Element(), i, j)
@@ -136,7 +133,6 @@ class Element(QtWidgets.QWidget):
         self.sysTypechange(0)
 
     def sysTypechange(self, i):
-        print(i)
 
         if not i:
             deleteItemsOfLayout(self.grid)

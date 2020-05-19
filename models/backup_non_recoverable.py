@@ -4,7 +4,10 @@ from const.constants import METHOD
 from const.methods import SystemProperty
 from functools import reduce
 
+from models.math_errors import MathErrors
 
+
+@MathErrors
 class Systems:
 
     def __init__(self, data, time):
@@ -13,7 +16,6 @@ class Systems:
         self.time = time
         self.systems = []
         self.calculator()
-        print(self.systems)
 
     def add(self, system):
         self.systems.append(system)
@@ -31,7 +33,6 @@ class Systems:
     @property
     def get_Pc(self):
         Pc = [system.probability for system in self.systems]
-        print(Pc)
         return reduce(lambda prod, elm: prod*elm, Pc)
 
     @property
@@ -151,5 +152,4 @@ if __name__ == '__main__':
 
     sys = Systems(values, time)
 
-    print(sys.get_Pc)
 

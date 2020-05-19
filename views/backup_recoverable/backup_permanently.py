@@ -1,4 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
+
+from const.constants import TEXT
 from models import backup_recoverable
 from views.tools.graph import Graph
 from views.tools.table import TableView
@@ -45,24 +47,22 @@ class BackupByPermanently(QtWidgets.QWidget):
         except:
             return
 
-        print(m, r, lmd, myu)
 
         self.asr = backup_recoverable.ReservedByPermanently(m, r, lmd, myu)
-        print(self.asr.ReadinessFunction)
+
         graphLayout = QtWidgets.QVBoxLayout(self)
         graphLayout.setObjectName("graph")
         self.graphProb = Graph(self)
         self.graphProb.setObjectName("graphProb")
-        self.graphProb.plot(list(range(m+1)), self.asr.ReadinessFunction, "Graph for Readiness Function")
+        self.graphProb.plot(list(range(m+1)), self.asr.ReadinessFunction, TEXT.TITLE_READINESS, TEXT.GR_T, TEXT.GR_K)
         graphLayout.addWidget(self.graphProb)
 
         self.graphDist = Graph(self)
         self.graphDist.setObjectName("graphDist")
-        self.graphDist.plot(list(range(m+1)), self.asr.T, "Graph for Time")
+        self.graphDist.plot(list(range(m+1)), self.asr.T, TEXT.TITLE_AT, TEXT.GR_T, TEXT.GR_AT)
         graphLayout.addWidget(self.graphDist)
 
         # self.createTable()
-        # print(self.asr.Tv)
         self.tableWidget = TableView(self, m + 1, 4, ["r", "Kг", "T", "Tв"], self.asr.rs, self.asr.ReadinessFunction, self.asr.T, self.asr.Tv)
 
         tableLayout = QtWidgets.QHBoxLayout()

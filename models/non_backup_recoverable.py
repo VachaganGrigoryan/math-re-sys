@@ -64,7 +64,7 @@ class Primary2(System):
 
     def __init__(self, lmd_s: list, myu_s: list, t: int = 40, dt: int = 2):
         _failure_recovery_ = sum(lmd/myu for lmd, myu in zip(lmd_s, myu_s))
-        print(f'_failure_recovery_ : {_failure_recovery_}')
+
         self._failure_intensity = sum(lmd_s)
         self._recovery_intensity = self._failure_intensity/_failure_recovery_
 
@@ -115,5 +115,3 @@ if __name__ == '__main__':
     myu_s = [0.5, 0.2, 0.1, 0.4, 0.9, 0.7, 0.6, 0.8]
 
     calc = Primary2(lmd_s, myu_s, 40, 4)
-
-    print(calc)

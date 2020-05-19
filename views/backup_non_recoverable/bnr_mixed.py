@@ -59,7 +59,7 @@ class BNRMixed(QWidget):
 
 
 
-        self.layout().addWidget(Info("non_recoverable_backup.html"), 3, 1)
+        # self.layout().addWidget(Info("non_recoverable_backup.html"), 3, 1)
 
 
     @pyqtSlot()
@@ -69,13 +69,11 @@ class BNRMixed(QWidget):
 
     @pyqtSlot()
     def RemoveCtrl(self):
-        print(self.Systems.layout().count())
         elem = self.sender().parent()
         self.SystemList.remove(elem)
         elem.deleteLater()
         # self.Systems.layout().removeWidget(elem)
         # deleteItemsOfLayout(elem.layout())
-        print(self.SystemList)
         if len(self.SystemList) == 0:
             self.calc.setEnabled(False)
 
@@ -93,9 +91,7 @@ class BNRMixed(QWidget):
             self.error.show()
             return
 
-        print(valueList, time)
         calc = BNR_mixed(valueList, time)
-        print(calc.get_Pc)
 
         answers = QTextEdit()
         answers.setLayout(QHBoxLayout())
@@ -249,7 +245,7 @@ class AddSystem(QDialog):
                 isThree = self.btnGroupThree.checkedButton().objectName()
                 typeText += f'/{row}' \
                             f'\n{self.btnGroupThree.checkedButton().text()}'
-                print(row, isThree, isTwo)
+
                 if isThree == '1':
                     col = int(self.col.text())
                     typeText += f'/{col}'
@@ -289,8 +285,6 @@ class AddSystem(QDialog):
             'isSame': self.isSame.isChecked() if isOne == 1 else None,
         }
 
-        print(self.System.SysConfig)
-
         # form.addWidget(QLabel(f'{self.System.SysConfig["system"][1]} համակարգ'))
         # typeText = f'{self.System.SysConfig["typeOne"][1]}/{self.System.SysConfig["row"]}'
         # if self.System.SysConfig["typeOne"][0]:
@@ -302,7 +296,6 @@ class AddSystem(QDialog):
 
         self.CreateSystem()
 
-        # print(self.parent().SystemList)
 
         self.parent().calc.setEnabled(True)
         self.close()
